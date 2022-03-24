@@ -7,6 +7,12 @@
 Flutter 2.8.0 • channel stable  
 Tools • Dart 2.15.0
 
+## 待开发的功能
+1. 微信支付（开发中）
+2. 二级商户入驻
+3. 聊天群消息免打扰，修改群名称等
+4. 代码优化重构
+
 ## 截图
 
 ![1](https://mycommunity-prod.oss-cn-hangzhou.aliyuncs.com/githubimg/index.jpg)  | ![2](https://mycommunity-prod.oss-cn-hangzhou.aliyuncs.com/githubimg/activity.jpg)  | ![3](https://mycommunity-prod.oss-cn-hangzhou.aliyuncs.com/githubimg/moment.jpg)
