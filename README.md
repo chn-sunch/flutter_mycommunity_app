@@ -1,16 +1,17 @@
 # flutter_mycommunity_app
 
-A new Flutter project.
+一个使用flutter开发的社交电商APP，实现了IM聊天，瀑布流，图片，语音，发送短信，地图定位，微信分享，消息推送，支付，社交账号登录等常用功能。
 
-## Getting Started
+## 编译版本
 
-This project is a starting point for a Flutter application.
+Flutter 2.8.0 • channel stable  
+Tools • Dart 2.15.0
 
-A few resources to get you started if this is your first Flutter project:
+## 截图
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+![1](https://mycommunity-prod.oss-cn-hangzhou.aliyuncs.com/githubimg/index.jpg)  | ![2](https://mycommunity-prod.oss-cn-hangzhou.aliyuncs.com/githubimg/activity.jpg)  | ![3](https://mycommunity-prod.oss-cn-hangzhou.aliyuncs.com/githubimg/moment.jpg)
+ ---- | ----- | ------  
+ ![4](https://mycommunity-prod.oss-cn-hangzhou.aliyuncs.com/githubimg/message.jpg)  | ![5](https://mycommunity-prod.oss-cn-hangzhou.aliyuncs.com/githubimg/home.jpg) |  
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## App演示
+应用商店搜索出来玩吧
