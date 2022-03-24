@@ -1,0 +1,60 @@
+buildscript {
+    ext.kotlin_version = '1.4.10'
+
+    repositories {
+        //修改的地方
+//        google()
+        //jcenter()
+//        maven { url "https://jitpack.io" }
+        maven { url 'http://download.flutter.io' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
+        maven {url 'https://developer.huawei.com/repo/'}
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.1.1'
+        classpath 'com.google.gms:google-services:4.3.4'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.huawei.agconnect:agcp:1.6.0.300'
+    }
+}
+
+allprojects {
+    repositories {
+        //google()
+        //jcenter()
+        maven { url "https://jitpack.io" }
+        maven { url 'http://download.flutter.io' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
+        maven {url 'https://developer.huawei.com/repo/'}
+        gradle.projectsEvaluated {
+            tasks.withType(JavaCompile) {
+                options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+            }
+        }
+
+//        flatDir {
+//            // 由于Library module中引用了 gif 库的 aar，在多 module 的情况下，
+//            // 其他的module编译会报错，所以需要在所有工程的repositories
+//            // 下把Library module中的libs目录添加到依赖关系中
+//            dirs project(':').file('libs')
+//        }
+    }
+}
+
+rootProject.buildDir = '../build'
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(':app')
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+

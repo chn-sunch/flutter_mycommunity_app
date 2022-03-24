@@ -1,0 +1,118 @@
+name: flutter_app
+description: Flutter project for mycommuniity.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+version: 2.3.1+32
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  dio: ^4.0.4 #网络请求
+  pull_to_refresh: ^2.0.0 #刷新组件
+  fluttertoast: ^8.0.8 #透明弹出框
+  shared_preferences: ^2.0.11 #本地数据存储
+  json_annotation: ^4.4.0 #json类自动生成器
+  sqflite: ^2.0.1 #本地数据库
+  steel_crypt: ^3.0.0+1 #加解密
+  encrypt: ^5.0.1 #加解密
+  fluwx_no_pay: ^3.8.1 #微信分享无支付版本
+  flutter_bloc: ^7.0.1
+  equatable: ^2.0.3 #对象比较
+  tobias: ^2.2.0 #支付宝sdk
+  flutter_app_badger: ^1.3.0 #桌面图标提醒
+  badges: ^2.0.2 #消息提醒小红点
+  flutter_screenutil: ^5.0.1+2 #屏幕尺寸转换
+  cached_network_image: ^3.2.0 #图片缓存
+  flutter_staggered_grid_view: ^0.4.0 #瀑布流
+  amap_flutter_location: ^3.0.0 #高德地图
+  amap_flutter_map: ^3.0.0 #高德地图
+  amap_flutter_base: ^3.0.0 #高德地图
+  permission_handler: ^8.3.0 #权限申请
+  flutter_downloader: ^1.7.2 #下载更新
+  web_socket_channel: ^2.1.0 #websocket链接
+  package_info_plus: ^1.3.0 #版本信息
+  device_info_plus: ^3.2.1 #设备信息
+  url_launcher: ^6.0.9 #打开url 拨打电话 发短信
+  image_cropper: ^1.4.1 #图片裁剪
+  photo_view: ^0.13.0 #图片放大缩小
+#  flutter_qr_reader: ^1.0.5 #二维码扫描
+  image_picker: ^0.8.4+4 #图像库中选取图像，并使用相机拍摄新照片
+  extended_text_field: ^9.0.3 #文字处理
+  extended_text: ^8.0.2 #文字处理
+  flutter_cache_manager: ^3.3.0 #图片缓存管理
+  firebase_messaging: ^11.2.4 #消息推送
+  audioplayers: ^0.20.1 #声音播放
+  audio_session: ^0.1.6+1 #声音播放
+  flutter_html: ^2.2.1 #html
+  flutter_spinkit: ^5.1.0 #进度条
+  extended_nested_scroll_view: ^5.0.0 #在个人空间中用到
+  loading_more_list: ^4.1.0 #加载更多
+  percent_indicator: ^3.4.0 #进度条
+  flutter_swiper_null_safety: ^1.0.2 #滚动播放图片
+  sliding_up_panel: ^2.0.0+1 #滑动吸顶
+  flutter_easyrefresh: ^2.2.1 #刷新
+  ff_stars: ^1.0.0 #评价星星
+  rate_in_stars: ^0.0.2 #显示星星
+  flutter_sound: ^9.1.1 #录音
+  uni_links: ^0.5.1 #外部打开app识别uri
+  flutter_apns: ^1.5.4 #ios apns推送和googlefcm推送
+  sign_in_with_apple: ^3.3.0 #ios账号登录
+  video_player: ^2.2.7 #视频播放
+  wechat_assets_picker: ^6.3.1
+
+  flutter_datetime_picker:
+    path: plugins/flutter_datetime_picker-1.5.1
+  flappy_search_bar_ns: #搜索组件
+    path: plugins/flappy_search_bar_ns-2.0.2
+  push_message_register:
+    path: plugins/push_message_register
+
+dev_dependencies:
+  build_runner: ^2.1.7
+  flutter_lints: ^1.0.4
+  json_serializable: ^6.1.3 #自动生成json类
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  assets:
+    - images/home.png
+    - images/load_error.png
+    - images/icon_head_default.png
+    - images/icon_nullimg.png
+    - images/headbackimg.png
+    - images/26074001_bzCh.gif
+    - images/emoji/
+    - images/fanghui.png
+    - images/fanghui_black.png
+    - images/fenxiang.png
+    - images/fenxiang_black.png
+    - images/complete.png
+    - images/pengyouquan.png
+    - images/redpacket_close.png
+    - images/redpacket_open.png
+    - images/openredpacket.png
+    - images/activitystatus/ended.png
+    - images/activitystatus/ended1.png
+    - images/activitystatus/ended2.png
+    - images/indicator.png
+    - images/indicator1.png
+    - images/3.0x/indicator.png
+    - images/splashpage/launch_image.png
+    - images/image-failed.png
+    - images/orangeNormal.png
+    - images/orangeSelected.png
+    - images/login_apple.png
+    - images/login_alipay.png
+    - images/login_weixin.png
+  uses-material-design: true
+  fonts:
+    - family: iconfont
+      fonts:
+        - asset: fonts/iconfont.ttf
+

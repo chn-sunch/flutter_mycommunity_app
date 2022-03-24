@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<!--    <style name="LaunchTheme" parent="Theme.AppCompat.Light.NoActionBar">-->
+<!--        <item name="android:windowBackground">@drawable/launch_background</item>-->
+<!--    </style>-->
+<!--    &lt;!&ndash;SplashActivity样式&ndash;&gt;-->
+<!--    <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">-->
+<!--        &lt;!&ndash; Show a splash screen on the activity. Automatically removed when-->
+<!--             Flutter draws its first frame &ndash;&gt;-->
+<!--        <item name="android:windowBackground">@drawable/launch_background</item>-->
+<!--        &lt;!&ndash;<item name="android:windowFullscreen">true</item>&ndash;&gt;-->
+<!--        &lt;!&ndash;不让windowBackground延申到navigation bar区域&ndash;&gt;-->
+<!--        <item name="android:windowDrawsSystemBarBackgrounds">false</item>-->
+<!--        &lt;!&ndash;适配Android P刘海屏&ndash;&gt;-->
+<!--        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>-->
+<!--        <item name="android:navigationBarColor">@color/white</item>-->
+
+<!--        <item name="android:windowFullscreen">true</item>-->
+<!--    </style>-->
+    <!--MainActivity样式-->
+    <style name="LaunchThemeMain" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Show a splash screen on the activity. Automatically removed when
+             Flutter draws its first frame -->
+<!--        <item name="android:windowFullscreen">true</item>-->
+        <!--不让windowBackground延申到navigation bar区域-->
+        <!--适配Android P刘海屏-->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">false</item>
+        <item name="android:navigationBarColor">@color/white</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@drawable/launch_background</item>
+
+
+    </style>
+
+    <!--    <style name="LaunchThemeMain" parent="@android:style/Theme.Light.NoTitleBar">-->
+<!--        &lt;!&ndash; Show a splash screen on the activity. Automatically removed when-->
+<!--             Flutter draws its first frame &ndash;&gt;-->
+<!--        <item name="android:windowBackground">@drawable/launch_background</item>-->
+<!--        &lt;!&ndash;<item name="android:windowFullscreen">true</item>&ndash;&gt;-->
+<!--        &lt;!&ndash;不让windowBackground延申到navigation bar区域&ndash;&gt;-->
+<!--        &lt;!&ndash;适配Android P刘海屏&ndash;&gt;-->
+<!--        <item name="android:windowDrawsSystemBarBackgrounds">false</item>-->
+<!--        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>-->
+<!--        <item name="android:navigationBarColor">@color/white</item>-->
+<!--        <item name="android:windowFullscreen">true</item>-->
+<!--    </style>-->
+
+
+    <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        <!--        <item name="android:windowFullscreen">true</item>-->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/white</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <!--        <item name="android:windowDrawsSystemBarBackgrounds">false</item>-->
+        <!--        <item name="android:windowAnimationStyle">@style/Animation</item>-->
+    </style>
+
+    <style name="Animation">
+        <item name="android:activityOpenEnterAnimation">@null</item>
+        <item name="android:activityOpenExitAnimation">@null</item>
+        <item name="android:activityCloseEnterAnimation">@null</item>
+        <item name="android:activityCloseExitAnimation">@null</item>
+        <item name="android:taskOpenEnterAnimation">@null</item>
+        <item name="android:taskOpenExitAnimation">@null</item>
+        <item name="android:taskCloseEnterAnimation">@null</item>
+        <item name="android:taskCloseExitAnimation">@null</item>
+        <item name="android:taskToFrontEnterAnimation">@null</item>
+        <item name="android:taskToFrontExitAnimation">@null</item>
+        <item name="android:taskToBackEnterAnimation">@null</item>
+        <item name="android:taskToBackExitAnimation">@null</item>
+    </style>
+
+    <string name="flutter_downloader_notification_started">开始下载更新包</string>
+    <string name="flutter_downloader_notification_in_progress">正在下载</string>
+    <string name="flutter_downloader_notification_canceled">下载取消</string>
+    <string name="flutter_downloader_notification_failed">下载失败</string>
+    <string name="flutter_downloader_notification_complete">已完成下载</string>
+    <string name="flutter_downloader_notification_paused">下载暂停</string>
+</resources>

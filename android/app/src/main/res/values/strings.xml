@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 华为推送不能直接配置在label中，会乱码 -->
+<resources>
+    <string name="app_name" >出来玩吧</string>
+</resources>
