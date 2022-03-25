@@ -21,17 +21,17 @@ class _ProAndSuggestionState extends State<ProAndSuggestion> {
     BottomNavigationBarItem(
       icon: Icon(IconFont.icon_bug, color: Colors.black54,),
       activeIcon: Icon(IconFont.icon_bug, color: Colors.blue,),
-      title: Text("BUG反馈"),
+      label: "BUG反馈",
     ),
     BottomNavigationBarItem(
       icon: Icon(IconFont.icon_linggan, size: 23),
       activeIcon: Icon(IconFont.icon_linggan, color: Colors.blue, size: 23),
-      title: Text("功能建议"),
+      label: "功能建议",
     ),
     BottomNavigationBarItem(
       activeIcon: Icon(IconFont.icon_jubao2, color: Colors.blue,size: 23,),
       icon: Icon(IconFont.icon_jubao2, size: 23,),
-      title: Text("我的举报"),
+      label: "我的举报",
     ),
 //    BottomNavigationBarItem(
 //      backgroundColor: Colors.white,

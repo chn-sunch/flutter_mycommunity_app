@@ -379,7 +379,7 @@ class _MyProfileEditState extends State<MyProfileEdit> {
         }
       }
       if(imageFile != null){
-        croppedFile = await ImageCropper.cropImage(
+        croppedFile = await ImageCropper().cropImage(
             maxWidth: 750,
             maxHeight: 750,
             compressQuality: 19,

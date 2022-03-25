@@ -23,13 +23,13 @@ class _MyCollectionState extends State<MyCollection> with SingleTickerProviderSt
       icon: Icon(IconFont.icon_dongtai1, size: 29,),
       activeIcon: Icon(IconFont.icon_dongtai2, size: 29
         , color: Global.profile.backColor,),
-      title: Text("一起出发"),
+      label: "一起出发",
     ),
     BottomNavigationBarItem(
       backgroundColor: Colors.white,
       icon: Icon(IconFont.icon_icon_shangcheng_xian, size: 29),
       activeIcon: Icon(IconFont.icon_icon_shangcheng_mian, color: Global.profile.backColor, size: 29),
-      title: Text("商家活动"),
+      label: "商家活动",
     ),
   ];
 

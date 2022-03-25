@@ -39,7 +39,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin,TickerProviderStateMixin, AutomaticKeepAliveClientMixin  {
+class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin  {
 
   int _currentIndex= 1;
   late TabController _tabController;

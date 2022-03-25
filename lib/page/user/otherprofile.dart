@@ -32,7 +32,7 @@ class OtherProfile extends StatefulWidget {
   _OtherProfileState  createState() => _OtherProfileState();
 }
 
-class _OtherProfileState extends State<OtherProfile> with SingleTickerProviderStateMixin,TickerProviderStateMixin {
+class _OtherProfileState extends State<OtherProfile> with TickerProviderStateMixin {
 
   User? user;
   ///当前滑动的位置

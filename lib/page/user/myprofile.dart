@@ -35,7 +35,7 @@ class MyProfile extends StatefulWidget {
 }
 
 
-class _MyProfileState extends State<MyProfile> with SingleTickerProviderStateMixin,TickerProviderStateMixin {
+class _MyProfileState extends State<MyProfile> with TickerProviderStateMixin {
 
   late User user;
   AliyunService _aliyunService = new AliyunService();
@@ -517,7 +517,7 @@ class _MyProfileState extends State<MyProfile> with SingleTickerProviderStateMix
           imageFile = File(image!.path);
         }
       }
-      croppedFile = await ImageCropper.cropImage(
+      croppedFile = await ImageCropper().cropImage(
           maxWidth: 750,
           maxHeight: 750,
           compressQuality: 19,

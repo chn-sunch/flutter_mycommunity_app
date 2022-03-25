@@ -368,6 +368,13 @@ class UnitaryCupertinoPageRoute<T> extends CupertinoPageRoute<T>  {
   }
 
 //修改flutter的源文件,flutter版本更新后需要添加代码
+// E:\flutter\packages\flutter\lib\src\cupertino\route.dart
+// 1.搜索
+// @override
+//   Widget buildTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+//     return buildPageTransitions<T>(this, context, animation, secondaryAnimation, child);
+//   }
+// 在上面的代码下添加以下的代码
 //  @override
 //  Widget buildMyTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
 //    return buildMyPageTransitions<T>(this, context, animation, secondaryAnimation, child);

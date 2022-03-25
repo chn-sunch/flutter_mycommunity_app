@@ -283,7 +283,7 @@ class _CreateCommunityState extends State<CreateCommunity> {
         }
       }
       if(imageFile != null){
-        croppedFile = await ImageCropper.cropImage(
+        croppedFile = await ImageCropper().cropImage(
             maxWidth: 750,
             maxHeight: 750,
             compressQuality: 30,

@@ -4,8 +4,9 @@
 
 ## 编译版本
 
-Flutter 2.8.0 • channel stable  
-Tools • Dart 2.15.0
+Flutter 2.10.3 • channel stable   
+Tools • Dart 2.16.1 
+由于使用的部分组件可能还不支持高版本Flutter SDK,如果超过这个版本有可能无法编译。
 
 ## 待开发的功能
 1. 微信支付（开发中）
