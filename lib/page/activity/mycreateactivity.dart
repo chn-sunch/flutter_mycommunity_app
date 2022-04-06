@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import '../../../model/activity.dart';
-import '../../../service/activity.dart';
-import '../../../global.dart';
-import '../../../widget/circle_headimage.dart';
+import '../../model/activity.dart';
+import '../../service/activity.dart';
+import '../../global.dart';
+import '../../widget/circle_headimage.dart';
 
-class ProgressActivity extends StatefulWidget {
+class MyCreateActivity extends StatefulWidget {
   @override
-  _ProgressActivityState createState() => _ProgressActivityState();
+  _MyCreateActivityState createState() => _MyCreateActivityState();
 }
 
-class _ProgressActivityState extends State<ProgressActivity> with AutomaticKeepAliveClientMixin{
+class _MyCreateActivityState extends State<MyCreateActivity> with AutomaticKeepAliveClientMixin{
   ActivityService _activityService = ActivityService();
   List<Activity> _activityMyList = [];
-
-  int pagestatus = 0;//简单处理载入状态
+  RefreshController _refreshController = RefreshController(initialRefresh: true);
+  bool _ismore = true;
 
   @override
   // TODO: implement wantKeepAlive
@@ -24,13 +25,19 @@ class _ProgressActivityState extends State<ProgressActivity> with AutomaticKeepA
   void initState() {
     // TODO: implement initState
     super.initState();
-    getMyActivity();
+    _getMyActivity();
   }
 
-  getMyActivity() async {
-    _activityMyList = await _activityService.getAllActivityListByUserCount5(0, Global.profile.user!.uid, Global.profile.user!.token!);
+  _getMyActivity() async {
+    _activityMyList = await _activityService.getAllActivityListByUserCount5(0, Global.profile.user!.uid,
+        Global.profile.user!.token!);
 
-    pagestatus = 1;
+    if(_activityMyList.length < 25){
+      _ismore = false;
+    }
+
+    _refreshController.refreshCompleted();
+
     if (mounted){
       setState(() {
 
@@ -38,16 +45,90 @@ class _ProgressActivityState extends State<ProgressActivity> with AutomaticKeepA
     }
   }
 
+  _onLoading() async{
+    if(!_ismore) return;
+
+    final moredata = await _activityService.getAllActivityListByUserCount5(_activityMyList.length, Global.profile.user!.uid,
+        Global.profile.user!.token!);
+
+
+
+    if(moredata.length > 0)
+      _activityMyList = _activityMyList + moredata;
+
+    if(moredata.length >= 25)
+      _refreshController.loadComplete();
+    else{
+      _ismore = false;
+      _refreshController.loadNoData();
+    }
+
+    if(mounted)
+      setState(() {
+
+      });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
 
-    return Container(
-      margin: EdgeInsets.all(5.0),
-      child: pagestatus == 0 ? Center(child: CircularProgressIndicator(
-        valueColor:  AlwaysStoppedAnimation(Global.profile.backColor),
-      )) : buildActivityList(),
-    );
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: Colors.black, size: 18),
+          onPressed: (){
+            Navigator.pop(context);
+          },
+        ),
+        title: Text('我发布的活动', style: TextStyle(color: Colors.black, fontSize: 16)),
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: EdgeInsets.only(top: 1),
+        child: SmartRefresher(
+          enablePullDown: true,
+          enablePullUp: _activityMyList.length >= 25,
+          onRefresh: _getMyActivity,
+          header: MaterialClassicHeader(distance: 100, ),
+          footer: CustomFooter(
+            builder: (BuildContext context,LoadStatus? mode){
+              Widget body ;
+              if(mode==LoadStatus.idle){
+                body =  Text("加载更多", style: TextStyle(color: Colors.black45, fontSize: 13));
+              }
+              else if(mode==LoadStatus.loading){
+                body =  Center(
+                  child: CircularProgressIndicator(
+                    valueColor:  AlwaysStoppedAnimation(Global.profile.backColor),
+                  ),
+                );
+              }
+              else if(mode == LoadStatus.failed){
+                body = Text("加载失败!点击重试!", style: TextStyle(color: Colors.black45, fontSize: 13));
+              }
+              else if(mode == LoadStatus.canLoading){
+                body = Text("放开我,加载更多!", style: TextStyle(color: Colors.black45, fontSize: 13));
+              }
+              else{
+                body = Text("—————— 我也是有底线的 ——————", style: TextStyle(color: Colors.black45, fontSize: 13));
+              }
+              return Container(
+                height: 55.0,
+                child: Center(child:body),
+              );
+            },
+          ),
+          controller: _refreshController,
+          onLoading: _onLoading,
+          child: _refreshController.headerStatus == RefreshStatus.completed && _activityMyList.length == 0 ? Center(
+            child: Text('你还没发布过活动',
+              style: TextStyle(color: Colors.black54, fontSize: 14), maxLines: 2,),
+          ) : buildActivityList(),
+        ),
+      ),
+    ) ;
   }
 
   Widget buildActivityList(){

@@ -78,7 +78,6 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
         if(user != null) {
           await LoginSuccess(user);
           yield AuthenticationAuthenticated();
-          yield AuthenticationAuthenticatedUpdateHome();
         }
         else{
           ///验证未通过
@@ -97,7 +96,6 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       if(user != null){
         await LoginSuccess(user);
         yield AuthenticationAuthenticated();
-        yield AuthenticationAuthenticatedUpdateHome();
       }
     }
     ///微信登录
@@ -106,7 +104,6 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       if(user != null){
         await LoginSuccess(user);
         yield AuthenticationAuthenticated();
-        yield AuthenticationAuthenticatedUpdateHome();
       }
     }
     ///ios登录
@@ -115,7 +112,6 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       if(user != null){
         await LoginSuccess(user);
         yield AuthenticationAuthenticated();
-        yield AuthenticationAuthenticatedUpdateHome();
       }
     }
 

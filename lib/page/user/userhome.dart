@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/widget/icontext.dart';
 
 import '../../util/imhelper_util.dart';
 import '../../util/common_util.dart';
@@ -26,28 +27,48 @@ class MyHome extends StatefulWidget {
 class _MyHomeState extends State<MyHome> {
   ImHelper _imHelper = ImHelper();
 
-  int countHistory = 0;
-  int countActivityEvaluate = 0;
-  int newmemberCount = 0;
-  int newFriendJoinCount = 0;
-  int newSharedCount = 0;
-  int myOrderCount = 0;
-  hisBrowse() async {
-    countHistory = await _imHelper.countBrowseHistory();
-    countActivityEvaluate = await _imHelper.getUserUnEvaluateOrder();
-    newSharedCount = await _imHelper.getUserSharedCount();
-    myOrderCount = await _imHelper.getUserOrder(-1);//-1是获取所有数据
+  int _countHistory = 0;
+  int _countActivityEvaluate = 0;
+  int _newmemberCount = 0;
+  int _newFriendJoinCount = 0;
+  int _newSharedCount = 0;
+  int _myOrderCount = 0;
+  int _collectioncount = 0;
+  int _pendingOrderCount = 0;
+  int _finishOrderCount = 0;
+
+  _hisBrowse() async {
+    _countHistory = await _imHelper.countBrowseHistory();
+    _newSharedCount = await _imHelper.getUserSharedCount();
+    _myOrderCount = await _imHelper.getUserOrder(-1);//-1是获取所有数据
+
+    _collectioncount = (await _imHelper.selGoodPriceCollectionByUid(Global.profile.user!.uid)).length +
+        ( await _imHelper.selActivityCollectionByUid(Global.profile.user!.uid)).length;
+
+
     setState(() {
 
     });
+  }
+
+  _getOrderCount() async {
+    _countActivityEvaluate = await _imHelper.getUserUnEvaluateOrder();
+
+    _pendingOrderCount = await _imHelper.getUserOrder(0);//-1是获取所有数据
+    _finishOrderCount = await _imHelper.getUserOrder(1);//-1是获取所有数据
+    if(mounted){
+      setState(() {
+
+      });
+    }
   }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    hisBrowse();
-
+    _hisBrowse();
+    _getOrderCount();
   }
 
   @override
@@ -61,139 +82,158 @@ class _MyHomeState extends State<MyHome> {
             child: Offstage(),
           ),
         ),
-
-        // appBar: PreferredSize(
-        //   preferredSize: Size.fromHeight(39.0), // here the desired height
-        //   child: AppBar(
-        //     backgroundColor: Colors.white,
-        //     actions: [
-        //       IconButton(
-        //         alignment: Alignment.topCenter,
-        //         icon: Icon(IconFont.icon_fenxiang, color: Colors.black45, ),
-        //         onPressed: (){
-        //           Navigator.pushNamed(context, '/Seting');
-        //         },
-        //       ),
-        //     ],
-        //     elevation: 0,
-        //   ),
-        // ),
         body: Container(
-          color: Colors.grey.shade100,
+          color: Colors.grey.shade50,
           child: Column(
             children: [
               buildHeadInfo(),
+
               Expanded(
                 child: ListView(
                   children: [
                     Container(
-                      color: Colors.white,
-                      child: ListTile(
-                        trailing: Icon(Icons.keyboard_arrow_right),
-                        leading: Icon(IconFont.icon_shetuanxiu, size: 23, color: Colors.cyan,),
-                        title: newSharedCount > 0 ? Badge(
-                            alignment: Alignment.centerLeft,
-                            toAnimate: false,
-                            badgeContent: Text(newSharedCount > 99 ? '...' : newSharedCount.toString(), style: TextStyle(fontSize: 10, color: Colors.white)),
-                            child: Text('分享', style: TextStyle(color: Colors.black87, fontSize: 14))):
-                        Text('分享', style: TextStyle(color: Colors.black87, fontSize: 14)),
-                        onTap: (){
-                          Navigator.pushNamed(context, '/SharedList');
-                        },
+                      margin: EdgeInsets.only(top: 1),
+                      padding: EdgeInsets.only(top: 10, left: 10, right: 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            child: Text('我的活动', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16), ),
+                            padding: EdgeInsets.only(top: 6),
+                          ),
+                          SizedBox(height: 20,),
+                          Padding(padding: EdgeInsets.only(left: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                IconText('发布的', icon: Icon(IconFont.icon_huodong3, color: Global.defredcolor, size: 29,),
+                                  style: TextStyle(fontSize: 12, color: Colors.black), direction: Axis.vertical, padding: EdgeInsets.only(bottom: 5), onTap: (){
+                                    Navigator.pushNamed(context, '/MyCreateActivity');
+                                  },),
+                                IconText('加入的', icon: Icon(IconFont.icon_xiaoxixuanzhong, size: 29, color: Colors.green,),
+                                    style: TextStyle(fontSize: 12, color: Colors.black), direction: Axis.vertical, padding: EdgeInsets.only(bottom: 5), onTap: (){
+                                    Navigator.pushNamed(context, '/MyJoinActivity');
+                                  },),
+                                IconText('收藏的', icon: Icon(IconFont.icon_zan1, size: 29, color: Colors.deepOrange,),
+                                    style: TextStyle(fontSize: 12, color: Colors.black), direction: Axis.vertical, padding: EdgeInsets.only(bottom: 5), onTap: (){
+                                    Navigator.pushNamed(context, '/MyCollectionActivity');
+
+                                  },),
+                                IconText('分享的', icon:  _newSharedCount > 0 ? Badge(
+                                    alignment: Alignment.centerLeft,
+                                    toAnimate: false,
+                                    badgeContent: Text(_newSharedCount > 99 ? '...' : _newSharedCount.toString(), style: TextStyle(fontSize: 10, color: Colors.white)),
+                                    child: Icon(IconFont.icon_shetuanxiu, size: 29, color: Colors.cyan,)):
+                                Icon(IconFont.icon_shetuanxiu, size: 29, color: Colors.cyan,),
+                                  style: TextStyle(fontSize: 12, color: Colors.black), direction: Axis.vertical, padding: EdgeInsets.only(bottom: 5),
+                                  onTap: (){
+                                    Navigator.pushNamed(context, '/SharedList');
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 20,),
+                          Container(
+                            child: Text('我的订单', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16), ),
+                            padding: EdgeInsets.only(top: 6),
+                          ),
+                          SizedBox(height: 20,),
+                          Padding(padding: EdgeInsets.only(left: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                IconText('待付款', icon: _pendingOrderCount > 0 ? Badge(
+                                    alignment: Alignment.centerLeft,
+                                    toAnimate: false,
+                                    badgeContent: Text(_pendingOrderCount > 99 ? '...' : _pendingOrderCount.toString(),
+                                        style: TextStyle(fontSize: 10, color: Colors.white)),
+                                    child: Icon(IconFont.icon_querenfukuan, size: 29, color: Colors.cyan,)):
+                                Icon(IconFont.icon_querenfukuan, size: 29, color: Colors.cyan,),
+                                  style: TextStyle(fontSize: 12, color: Colors.black), direction: Axis.vertical, padding: EdgeInsets.only(bottom: 5),onTap: (){
+                                    Navigator.pushNamed(context, '/MyOrderPending').then((value){
+                                      setState(() {
+                                        _getOrderCount();
+                                      });
+                                    });
+                                  },),
+                                //icon_daifukuan2
+                                IconText('待收货', icon: _finishOrderCount > 0 ? Badge(
+                                    alignment: Alignment.centerLeft,
+                                    toAnimate: false,
+                                    badgeContent: Text(_finishOrderCount > 99 ? '...' : _finishOrderCount.toString(),
+                                        style: TextStyle(fontSize: 10, color: Colors.white)),
+                                    child: Icon(IconFont.icon_daifukuan2, size: 29, color: Colors.cyan,)):
+                                Icon(IconFont.icon_daifukuan2, size: 29, color: Colors.cyan,),
+                                    style: TextStyle(fontSize: 12, color: Colors.black), direction: Axis.vertical, padding: EdgeInsets.only(bottom: 5), onTap: (){
+                                    Navigator.pushNamed(context, '/MyOrderFinish').then((value){
+                                      setState(() {
+                                        _getOrderCount();
+                                      });
+                                    });
+                                  },),
+
+                                IconText('待评价', icon: _countActivityEvaluate > 0 ? Badge(
+                                    alignment: Alignment.centerLeft,
+                                    toAnimate: false,
+                                    badgeContent: Text(_countActivityEvaluate > 99 ? '...' : _countActivityEvaluate.toString(),
+                                        style: TextStyle(fontSize: 10, color: Colors.white)),
+                                    child: Icon(IconFont.icon_dingdan, size: 29, color: Colors.cyan,)):
+                                Icon(IconFont.icon_dingdan, size: 29, color: Colors.cyan,),
+                                    style: TextStyle(fontSize: 12, color: Colors.black), direction: Axis.vertical, padding: EdgeInsets.only(bottom: 5),
+                                  onTap: (){
+                                    Navigator.pushNamed(context, '/ActivityEvaluate').then((value){
+                                      setState(() {
+                                        _getOrderCount();
+                                      });
+                                    });
+                                  },
+                                ),
+                                IconText('已退款', icon: Icon(IconFont.icon_huodong2, size: 29, color: Colors.orange,),
+                                  style: TextStyle(fontSize: 12, color: Colors.black), direction: Axis.vertical, padding: EdgeInsets.only(bottom: 5), onTap: (){
+                                    Navigator.pushNamed(context, '/MyOrderRefund');
+
+                                  },),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 10,),
+                        ],
                       ),
-                    ),
-                    Container(
-                      color: Colors.white,
-                      child: ListTile(
-                        trailing: Icon(Icons.keyboard_arrow_right),
-                        leading: Icon(IconFont.icon_collection_b, size: 23, color: Colors.yellow.shade700,),
-                        title: Text('收藏', style: TextStyle(color: Colors.black87, fontSize: 14)),
-                        onTap: (){
-                          Navigator.pushNamed(context, '/MyCollection');
-                        },
-                      ),
-                    ),
-                    SizedBox(height: 10,),
-                    Container(
-                      color: Colors.white,
-                      child: ListTile(
-                        trailing: Icon(Icons.keyboard_arrow_right),
-                        leading: Icon(IconFont.icon_icon_shangcheng_mian, size: 23, color: Colors.red,),
-                        title: countActivityEvaluate > 0 ? Badge(
-                            alignment: Alignment.centerLeft,
-                            toAnimate: false,
-                            badgeContent: Text(countActivityEvaluate > 99 ? '...' : countActivityEvaluate.toString(),
-                                style: TextStyle(fontSize: 10, color: Colors.white)),
-                            child: Text('待评价', style: TextStyle(color: Colors.black87, fontSize: 14))):
-                        Text('待评价', style: TextStyle(color: Colors.black87, fontSize: 14)),
-                        onTap: (){
-                          Navigator.pushNamed(context, '/ActivityEvaluate');
-                        },
-                      ),
-                    ),
-                    Container(
-                      color: Colors.white,
-                      child: ListTile(
-                        trailing: Icon(Icons.keyboard_arrow_right),
-                        leading: Icon(IconFont.icon_dingdan, size: 23, color: Colors.orange,),
-                        title: myOrderCount > 0 ? Badge(
-                            alignment: Alignment.centerLeft,
-                            toAnimate: false,
-                            badgeContent: Text(myOrderCount > 99 ? '...' : myOrderCount.toString(), style: TextStyle(fontSize: 10, color: Colors.white)),
-                            child:Text('我的订单', style: TextStyle(color: Colors.black87, fontSize: 14))) :
-                        Text('我的订单', style: TextStyle(color: Colors.black87, fontSize: 14)),
-                        onTap: (){
-                          Navigator.pushNamed(context, '/MyOrder');
-                        },
-                      ),
-                    ),
-                    Container(
-                      color: Colors.white,
-                      child: ListTile(
-                        trailing: Icon(Icons.keyboard_arrow_right),
-                        leading: Icon(IconFont.icon_dongtai2, size: 23, color: Colors.lightGreen,),
-                        title: Text('我的活动', style: TextStyle(color: Colors.black87, fontSize: 14)),
-                        onTap: (){
-                          Navigator.pushNamed(context, '/MyActivityAll');
-                        },
+                      decoration: BoxDecoration(
+                          color: Colors.white
                       ),
                     ),
                     SizedBox(height: 10,),
 
-                    Container(
-                      color: Colors.white,
-                      child: ListTile(
-                        onTap: (){
-                          Navigator.pushNamed(context, '/ProAndSuggestion');
-                        },
-                        trailing: Icon(Icons.keyboard_arrow_right),
-                        leading: Icon(Icons.mail, size: 23, color: Color(0xFFFA8072),),
-                        title: Text('问题建议', style: TextStyle(color: Colors.black87, fontSize: 14)),
-                      ),
-                    ),
-                    Container(
-                      color: Colors.white,
-                      child: ListTile(
-                        onTap: (){
-                          Navigator.pushNamed(context, '/MyUserId');
-                        },
-                        trailing: Icon(Icons.keyboard_arrow_right),
-                        leading: Icon(IconFont.icon_24gf_shieldCheck, size: 23, color: Colors.lightBlue,),
-                        title: Text('账户安全', style: TextStyle(color: Colors.black87, fontSize: 14)),
-                      ),
-                    ),
-                    Container(
-                      color: Colors.white,
-                      child: ListTile(
-                        onTap: (){
-                          Navigator.pushNamed(context, '/SysHelper');
-                        },
-                        trailing: Icon(Icons.keyboard_arrow_right),
-                        leading: Icon(Icons.help, size: 23, color: Colors.blueGrey,),
-                        title: Text('帮助中心', style: TextStyle(color: Colors.black87, fontSize: 14)),
-                      ),
-                    ),
+                    Container(padding: EdgeInsets.only(left: 20, right: 20, top: 20,bottom: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconText('问题建议', icon: Icon(IconFont.icon_jianyi, size: 29,),
+                            style: TextStyle(fontSize: 12, color: Colors.black), direction: Axis.vertical, padding: EdgeInsets.only(bottom: 5), onTap: (){
+                              Navigator.pushNamed(context, '/ProAndSuggestion');
+                            },),
+                          IconText('账户安全', icon: Icon(IconFont.icon_zhanghuanquan1, size: 29,),
+                              style: TextStyle(fontSize: 12, color: Colors.black), direction: Axis.vertical, padding: EdgeInsets.only(bottom: 5), onTap: (){
+                              Navigator.pushNamed(context, '/MyUserId');
+                            },),
 
+                          IconText('帮助中心', icon: Icon(IconFont.icon_bangzhu_kefu, size: 29,),
+                            style: TextStyle(fontSize: 12, color: Colors.black), direction: Axis.vertical, padding: EdgeInsets.only(bottom: 5), onTap: (){
+                              Navigator.pushNamed(context, '/SysHelper');
+                            },),
+                          IconText('关于玩吧', icon: Icon(IconFont.icon_guanyuwomen2, size: 29,),
+                            style: TextStyle(fontSize: 12, color: Colors.black), direction: Axis.vertical, padding: EdgeInsets.only(bottom: 5), onTap: (){
+                              Navigator.pushNamed(context, '/About');
+                            },),
+                        ],
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white
+                      ),
+                    ),
                   ],
                 ),
               )
@@ -205,94 +245,97 @@ class _MyHomeState extends State<MyHome> {
 
   Widget buildHeadInfo(){
     return Container(
-      height: 89,
-      padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      height: 149,
+      padding: EdgeInsets.only(left: 10, right: 10, bottom: 10 , top: 16),
+      child: Column(
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              InkWell(
-                child: Global.profile.user != null ? NoCacheClipRRectOhterHeadImage(imageUrl: Global.profile.user!.profilepicture??"",
-                  uid: Global.profile.user!.uid,width: 60, cir: 50,) : AssetImage(Global.headimg) as Widget,
-                onTap: (){
-                  Navigator.pushNamed(context, '/PhotoViewImageHead', arguments: {"iscache": false, "image":
-                  Global.profile.user!.profilepicture});
-                },
-              ),
-              SizedBox(width: 10,),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
+              Row(
                 children: [
                   InkWell(
-                    child: Text(Global.profile.user!.username, style: TextStyle(color:  Colors.black87, fontSize: 15),),
+                    child: Global.profile.user != null ? NoCacheClipRRectOhterHeadImage(imageUrl: Global.profile.user!.profilepicture??"",
+                      uid: Global.profile.user!.uid,width: 60, cir: 50,) : AssetImage(Global.headimg) as Widget,
                     onTap: (){
-                      Navigator.pushNamed(context, '/MyProfile').then((value){
-                        setState(() {
-
-                        });
-                      });
+                      Navigator.pushNamed(context, '/PhotoViewImageHead', arguments: {"iscache": false, "image":
+                      Global.profile.user!.profilepicture});
                     },
                   ),
-                  SizedBox(height: 5,),
-                  Row(
+                  SizedBox(width: 10,),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       InkWell(
+                        child: Text(Global.profile.user!.username, style: TextStyle(color:  Colors.black87, fontSize: 15),),
                         onTap: (){
-                          if(Global.profile.user!.followers! > 0) {
-                            Navigator.pushNamed(context, '/MyFansUser', arguments: {"uid": Global.profile.user!.uid}).then((value){
-                              setState(() {
+                          Navigator.pushNamed(context, '/MyProfile').then((value){
+                            setState(() {
 
-                              });
                             });
-                          }
+                          });
                         },
-                        child:  Text('粉丝 ${CommonUtil.getNum(Global.profile.user!.followers!)} | ',
-                          style: TextStyle(color: Colors.black45, fontSize: 13),),
                       ),
-                      InkWell(
-                        onTap: (){
-                          if(Global.profile.user!.following! > 0) {
-                            Navigator.pushNamed(context, '/MyFollowUser').then((value){
-                              setState(() {
-
-                              });
-                            });
-                          }
-                        },
-                        child:  Text('关注 ${CommonUtil.getNum(Global.profile.user!.following!)} | ',
-                          style: TextStyle(color: Colors.black45, fontSize: 13),),
-                      ),
-                      InkWell(
-                        child:  Text('历史浏览 ${countHistory}', style: TextStyle(color: Colors.black45, fontSize: 13),),
-                        onTap: (){
-                          Navigator.pushNamed(context, '/MyBrowHistory');
-                        },
-                      )
+                      SizedBox(height: 5,),
+                      Text('会员号: ${Global.profile.user!.uid}', style: TextStyle(color: Colors.black38, fontSize: 12),)
                     ],
                   )
                 ],
+              ),
+              Align(
+                child: InkWell(
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 5),
+                    child: Row(
+                      children: [
+                        Text('个人主页 ', style: TextStyle(color:  Colors.black87, fontSize: 15)),
+                        Icon(Icons.keyboard_arrow_right, color: Colors.black45,),
+                      ],
+                    ),
+                  ),
+                  onTap: (){
+                    Navigator.pushNamed(context, '/MyProfile');
+                  },
+                ),
+                alignment: Alignment.centerRight,
               )
             ],
           ),
-          Align(
-            child: InkWell(
-              child: Padding(
-                padding: EdgeInsets.only(right: 5),
-                child: Row(
-                children: [
-                  Text('个人主页 ', style: TextStyle(color:  Colors.black87, fontSize: 15)),
-                  Icon(Icons.keyboard_arrow_right, color: Colors.black45,),
-                  ],
-                ),
-              ),
-              onTap: (){
-                Navigator.pushNamed(context, '/MyProfile');
-              },
+          SizedBox(height: 20,),
+          Padding(
+            padding: EdgeInsets.only(right: 10,left: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconText('收藏商家', icon: Text('${_collectioncount}', style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),),
+                  style: TextStyle(fontSize: 14, color: Colors.black), direction: Axis.vertical, onTap: (){
+                    Navigator.pushNamed(context, '/MyCollectionGoodPrice');
+                  },),
+                IconText('历史浏览', icon: Text('${_countHistory}', style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),),
+                  style: TextStyle(fontSize: 14, color: Colors.black), direction: Axis.vertical, onTap: (){
+                    Navigator.pushNamed(context, '/MyBrowHistory');
+                  },),
+                IconText('关注', icon: Text('${CommonUtil.getNum(Global.profile.user!.following!)}',
+                  style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold), ),
+                  style: TextStyle(fontSize: 14, color: Colors.black), direction: Axis.vertical, onTap: (){
+                    Navigator.pushNamed(context, '/MyFollowUser').then((value){
+                      setState(() {
+
+                      });
+                    });
+                  },),
+                IconText('粉丝', icon: Text('${CommonUtil.getNum(Global.profile.user!.followers!)}', style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),),
+                  style: TextStyle(fontSize: 14, color: Colors.black), direction: Axis.vertical, onTap: (){
+                    Navigator.pushNamed(context, '/MyFansUser', arguments: {"uid": Global.profile.user!.uid}).then((value){
+                      setState(() {
+
+                      });
+                    });
+                  },),
+              ],
             ),
-            alignment: Alignment.centerRight,
-          )
+          ),
         ],
       ),
       decoration: BoxDecoration(

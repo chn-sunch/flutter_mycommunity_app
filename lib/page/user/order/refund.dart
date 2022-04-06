@@ -14,12 +14,11 @@ class MyOrderRefund extends StatefulWidget {
   _MyOrderRefundState createState() => _MyOrderRefundState();
 }
 
-class _MyOrderRefundState extends State<MyOrderRefund>  with AutomaticKeepAliveClientMixin{
+class _MyOrderRefundState extends State<MyOrderRefund> {
   UserService _userService = UserService();
   List<Order> _orderList = [];
-  int pagestatus = 0;//简单处理载入状态
-  ImHelper imhelper = new ImHelper();
-  GPService gpservice = new GPService();
+  int _pagestatus = 0;//简单处理载入状态
+  GPService _gpservice = new GPService();
 
   @override
   // TODO: implement wantKeepAlive
@@ -29,14 +28,14 @@ class _MyOrderRefundState extends State<MyOrderRefund>  with AutomaticKeepAliveC
   void initState() {
     // TODO: implement initState
     super.initState();
-    getMyOrder();
+    _getMyOrder();
   }
 
-  getMyOrder() async {
+  _getMyOrder() async {
     _orderList = await _userService.getMyRefundOrder(Global.profile.user!.token!, Global.profile.user!.uid, (String statecode, String error){
       ShowMessage.showToast(error);
     });
-    pagestatus = 1;
+    _pagestatus = 1;
     if (mounted){
       setState(() {
 
@@ -46,18 +45,29 @@ class _MyOrderRefundState extends State<MyOrderRefund>  with AutomaticKeepAliveC
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
 
 
-    return Container(
-      margin: EdgeInsets.all(5.0),
-      child: pagestatus == 0 ? Center(child: CircularProgressIndicator(
-        valueColor:  AlwaysStoppedAnimation(Global.profile.backColor),
-      )) : buildOrderList(),
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(icon: Icon(Icons.arrow_back_ios, size: 18,),
+          color: Colors.black,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title:  Text('已退款的订单',textAlign: TextAlign.center, style: TextStyle(color: Colors.black, fontSize: 16)),
+        centerTitle: true,
+      ),
+      body: Container(
+        margin: EdgeInsets.all(5.0),
+        child: _pagestatus == 0 ? Center(child: CircularProgressIndicator(
+          valueColor:  AlwaysStoppedAnimation(Global.profile.backColor),
+        )) : _buildOrderList(),
+      ),
     );
   }
 
-  Widget buildOrderList(){
+  Widget _buildOrderList(){
     Widget ret = SizedBox.shrink();
     List<Widget> lists = [];
 
@@ -153,7 +163,7 @@ class _MyOrderRefundState extends State<MyOrderRefund>  with AutomaticKeepAliveC
   }
 
   Future<void> _gotoGoodPrice(String goodpriceid) async {
-    GoodPiceModel? goodprice = await gpservice.getGoodPriceInfo(goodpriceid);
+    GoodPiceModel? goodprice = await _gpservice.getGoodPriceInfo(goodpriceid);
     if (goodprice != null) {
       Navigator.pushNamed(
           context, '/GoodPriceInfo', arguments: {

@@ -3,6 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 
+import '../page/about.dart';
+import '../page/activity/collection.dart';
+import '../page/activity/mycreateactivity.dart';
+import '../page/activity/myjoinactivity.dart';
 import '../page/index.dart';
 import '../page/activity/scan.dart';
 import '../page/activity/searchactivity.dart';
@@ -10,15 +14,16 @@ import '../page/activity/searchactivityresult.dart';
 import '../page/activity/province.dart';
 import '../page/activity/city.dart';
 import '../page/activity/activityinfo.dart';
-import '../page/activity/useractivityall.dart';
 import '../page/activity/reportactivity.dart';
 import '../page/activity/issuedactivity.dart';
 import '../page/activity/widget/reportimageactivity.dart';
 import '../page/activity/widget/reportotheractivity.dart';
 import '../page/activity/widget/fraudactivity.dart';
+import '../page/shop/collection.dart';
 import '../page/shop/goodpriceinfo.dart';
 import '../page/shop/createorder.dart';
 import '../page/shop/orderfinish.dart';
+import '../page/shop/orderinfo.dart';
 import '../page/shop/searchproduct.dart';
 import '../page/shop/searchproductresultpage.dart';
 import '../page/shop/evaluateinfo.dart';
@@ -36,10 +41,12 @@ import '../page/im/sharedrelationlist.dart';
 import '../page/im/redpacket.dart';
 import '../page/im/redpacketlist.dart';
 import '../page/user/browhistory.dart';
+import '../page/user/order/finish.dart';
+import '../page/user/order/pending.dart';
+import '../page/user/order/refund.dart';
 import '../page/user/setting.dart';
 import '../page/user/followuserlist.dart';
 import '../page/user/fanslist.dart';
-import '../page/user/collection.dart';
 import '../page/user/order/allorder.dart';
 import '../page/user/order/evaluate.dart';
 import '../page/user/syshelper.dart';
@@ -209,30 +216,65 @@ var onGenerateRoute = (RouteSettings settings){
       }
       break;
 
-    case '/MyCollection':
+    case '/MyCollectionGoodPrice':
       if (Platform.isAndroid) {
-        return AnimationPageRoute(builder: (_) => MyCollection(), settings: settings.copyWith());
+        return AnimationPageRoute(builder: (_) => MyCollectionGoodPrice(), settings: settings.copyWith());
       } else if (Platform.isIOS) {
-        return CupertinoPageRoute(builder: (_) => MyCollection(), settings: settings.copyWith());
+        return CupertinoPageRoute(builder: (_) => MyCollectionGoodPrice(), settings: settings.copyWith());
       }
       break;
 
-    case '/MyActivityAll'://个人主页中的活动列表，创建，加入，收藏
+    case '/MyCollectionActivity':
       if (Platform.isAndroid) {
-        return AnimationPageRoute(builder: (_) => MyActivityAll(), settings: settings.copyWith());
+        return AnimationPageRoute(builder: (_) => MyCollectionActivity(), settings: settings.copyWith());
       } else if (Platform.isIOS) {
-        return CupertinoPageRoute(builder: (_) => MyActivityAll(), settings: settings.copyWith());
+        return CupertinoPageRoute(builder: (_) => MyCollectionActivity(), settings: settings.copyWith());
       }
       break;
 
-    case '/MyOrder':
+    case '/MyCreateActivity'://个人主页中的活动列表，创建，加入，收藏
+      if (Platform.isAndroid) {
+        return AnimationPageRoute(builder: (_) => MyCreateActivity(), settings: settings.copyWith());
+      } else if (Platform.isIOS) {
+        return CupertinoPageRoute(builder: (_) => MyCreateActivity(), settings: settings.copyWith());
+      }
+      break;
+
+    case '/MyJoinActivity'://个人主页中的活动列表，创建，加入，收藏
+      if (Platform.isAndroid) {
+        return AnimationPageRoute(builder: (_) => MyJoinActivity(), settings: settings.copyWith());
+      } else if (Platform.isIOS) {
+        return CupertinoPageRoute(builder: (_) => MyJoinActivity(), settings: settings.copyWith());
+      }
+      break;
+
+    case '/MyOrderPending':
       if(Platform.isAndroid){
-        return AnimationPageRoute(builder: (_) => MyOrder(), settings: settings.copyWith());
+        return AnimationPageRoute(builder: (_) => MyOrderPending(), settings: settings.copyWith());
       }
       else if(Platform.isIOS){
-        return CupertinoPageRoute(builder: (_) => MyOrder(), settings: settings.copyWith());
+        return CupertinoPageRoute(builder: (_) => MyOrderPending(), settings: settings.copyWith());
       }
       break;
+
+    case '/MyOrderFinish':
+      if(Platform.isAndroid){
+        return AnimationPageRoute(builder: (_) => MyOrderFinish(), settings: settings.copyWith());
+      }
+      else if(Platform.isIOS){
+        return CupertinoPageRoute(builder: (_) => MyOrderFinish(), settings: settings.copyWith());
+      }
+      break;
+
+    case '/MyOrderRefund':
+      if(Platform.isAndroid){
+        return AnimationPageRoute(builder: (_) => MyOrderRefund(), settings: settings.copyWith());
+      }
+      else if(Platform.isIOS){
+        return CupertinoPageRoute(builder: (_) => MyOrderRefund(), settings: settings.copyWith());
+      }
+      break;
+
 
     case '/ProAndSuggestion':
       if (Platform.isAndroid) {
@@ -617,6 +659,22 @@ var onGenerateRoute = (RouteSettings settings){
         return AnimationPageRoute(builder: (_) => BindUser(arguments: settings.arguments,), settings: settings.copyWith());
       } else if (Platform.isIOS) {
         return CupertinoPageRoute(builder: (_) => BindUser(arguments: settings.arguments,), settings: settings.copyWith());
+      }
+      break;
+
+    case '/About':
+      if (Platform.isAndroid) {
+        return AnimationPageRoute(builder: (_) => About(), settings: settings.copyWith());
+      } else if (Platform.isIOS) {
+        return CupertinoPageRoute(builder: (_) => About(), settings: settings.copyWith());
+      }
+      break;
+
+    case '/OrderInfo':
+      if (Platform.isAndroid) {
+        return AnimationPageRoute(builder: (_) => OrderInfo(arguments: settings.arguments,), settings: settings.copyWith());
+      } else if (Platform.isIOS) {
+        return CupertinoPageRoute(builder: (_) => OrderInfo(arguments: settings.arguments,), settings: settings.copyWith());
       }
       break;
 

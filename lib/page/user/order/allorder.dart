@@ -101,8 +101,8 @@ class _MyOrderState extends State<MyOrder>  with SingleTickerProviderStateMixin{
       body: TabBarView(
           controller: _tabController,
           children: [
-            MyOrderPending(getOrderCount()),
-            MyOrderFinish(getOrderCount()),
+            MyOrderPending(),
+            MyOrderFinish(),
             MyOrderConfirm(),
             MyOrderRefund()
           ]

@@ -34,15 +34,16 @@ class IconText extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       child: buildContent(),
-      onTap: onTap != null ? onTap!() : (){},
+      onTap: (){
+        if(onTap != null) {
+          onTap!();
+        }
+      },
     );
   }
 
   Widget? buildContent(){
-    return icon == null
-        ? Text(text ?? '', style: style)
-        : text == null || text!.isEmpty
-        ? (padding == null ? icon : Padding(padding: padding!, child: icon))
+    return icon == null ? Text(text ?? '', style: style) : text == null || text!.isEmpty ? (padding == null ? icon : Padding(padding: padding!, child: icon))
         : RichText(
       text: TextSpan(style: style, children: [
         WidgetSpan(

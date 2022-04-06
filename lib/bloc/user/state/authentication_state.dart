@@ -14,10 +14,7 @@ class AuthenticationAuthenticated extends AuthenticationState {
   bool isUserImage;
   AuthenticationAuthenticated({this.isUserImage = false});
 }
-//登录成功只更新首页
-class AuthenticationAuthenticatedUpdateHome extends AuthenticationState {
-  AuthenticationAuthenticatedUpdateHome();
-}
+
 ///验证未通过 1.账号密码登录验证  2.信息更新等失败后的状态
 class AuthenticationUnauthenticated extends AuthenticationState {
 

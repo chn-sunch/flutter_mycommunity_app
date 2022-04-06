@@ -1,7 +1,7 @@
 name: flutter_app
 description: Flutter project for mycommuniity.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 2.3.1+32
+version: 2.3.2+33
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -80,11 +80,8 @@ dev_dependencies:
 
 flutter:
   assets:
-    - images/home.png
-    - images/load_error.png
     - images/icon_head_default.png
     - images/icon_nullimg.png
-    - images/headbackimg.png
     - images/26074001_bzCh.gif
     - images/emoji/
     - images/fanghui.png
@@ -109,6 +106,7 @@ flutter:
     - images/login_apple.png
     - images/login_alipay.png
     - images/login_weixin.png
+    - images/ic_launcher.png
   uses-material-design: true
   fonts:
     - family: iconfont

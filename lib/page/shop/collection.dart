@@ -14,14 +14,14 @@ class MyCollectionGoodPrice extends StatefulWidget{
 }
 
 class _MyCollectionGoodPriceState extends State<MyCollectionGoodPrice> {
-  List<GoodPiceModel> goodPriceModels = [];
+  List<GoodPiceModel> _goodPriceModels = [];
   ImHelper _imHelper = new ImHelper();
-  bool isPageLoad = false;
+  bool _isPageLoad = false;
 
   getMyCollection() async {
 
-    goodPriceModels = await _imHelper.selGoodPriceCollectionByUid(Global.profile.user!.uid);
-    isPageLoad = true;
+    _goodPriceModels = await _imHelper.selGoodPriceCollectionByUid(Global.profile.user!.uid);
+    _isPageLoad = true;
     setState(() {
 
     });
@@ -38,10 +38,20 @@ class _MyCollectionGoodPriceState extends State<MyCollectionGoodPrice> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: isPageLoad ?  ((goodPriceModels == null || goodPriceModels.length == 0) ? Center(
+      appBar: AppBar(
+        leading: IconButton(icon: Icon(Icons.arrow_back_ios, size: 18,),
+          color: Colors.black,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title:  Text('收藏的商家活动',textAlign: TextAlign.center, style: TextStyle(color: Colors.black, fontSize: 16)),
+        centerTitle: true,
+      ),
+      body: _isPageLoad ?  ((_goodPriceModels == null || _goodPriceModels.length == 0) ? Center(
         child: Text('还没有收藏的商家活动', style: TextStyle(color: Colors.black54, fontSize: 14, ),),
       ) : ListView(
-        children: buildProductContent(goodPriceModels),
+        children: buildProductContent(_goodPriceModels),
       )) : Center(
         child: CircularProgressIndicator(
           valueColor:  AlwaysStoppedAnimation(Global.profile.backColor),
@@ -61,7 +71,7 @@ class _MyCollectionGoodPriceState extends State<MyCollectionGoodPrice> {
           Expanded(
               child: Container(
                 child: ListView(
-                  children: buildProductContent(goodPriceModels),
+                  children: buildProductContent(_goodPriceModels),
                 ),
               )
           )

@@ -330,72 +330,7 @@ class _MyUserIdEditState extends State<MyUserId> {
                         ],
                       ),
                     ),//昵称
-                    Container(
-                      margin: EdgeInsets.all(10),
-                      child: Text('隐私相关', style: TextStyle(fontSize: 14, color: Colors.black54),),
-                    ),
-                    Card(
-                      elevation: 0,
-                      color: Colors.white,
-                      child: Column(
-                        children: [
-                          ListTile(
-                            onTap: (){
-                              Navigator.pushNamed(context, '/HtmlContent', arguments: {
-                                "parameterkey": "loginuseragree",
-                                "title": "隐私政策"
-                              });
-                            },
-                            title: Container(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text("隐私政策", style: TextStyle(fontSize: fontsize),),
-                                ],
-                              ),
-                            ),
-                            trailing: Icon(Icons.keyboard_arrow_right),
-                          ),
-                          Padding(padding: EdgeInsets.only(left: 10, right: 10),
-                            child: Divider(height: 0.1, color: Colors.black26),
-                          ),
-                          ListTile(
-                            onTap: (){
-                              Navigator.pushNamed(context, '/HtmlContent', arguments: {
-                                "parameterkey": "useragreement",
-                                "title": "用户协议"
-                              });
-                            },
-                            title: Container(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text("用户协议", style: TextStyle(fontSize: fontsize),),
-                                ],
-                              ),
-                            ),
-                            trailing: Icon(Icons.keyboard_arrow_right),
-                          ),
-                          Padding(padding: EdgeInsets.only(left: 10, right: 10),
-                            child: Divider(height: 0.1, color: Colors.black26),
-                          ),
-                          ListTile(
-                            onTap: (){
-                              _showTel();
-                            },
-                            title: Container(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text("联系我们", style: TextStyle(fontSize: fontsize),),
-                                ],
-                              ),
-                            ),
-                            trailing: Icon(Icons.keyboard_arrow_right),
-                          ),
-                        ],
-                      ),
-                    ),//昵称
+
                     Card(
                       elevation: 0,
                       color: Colors.white,
@@ -420,7 +355,9 @@ class _MyUserIdEditState extends State<MyUserId> {
                         ),
                         trailing: Icon(Icons.keyboard_arrow_right),
                       ),
-                    ),//位置
+                    ),//退出
+
+
                   ],
                 ),
               ),

@@ -13,37 +13,32 @@ import '../../../util/imhelper_util.dart';
 import '../../../global.dart';
 
 class MyOrderFinish extends StatefulWidget {
-  Future updateCallBack;
-  MyOrderFinish(this.updateCallBack);
+  MyOrderFinish();
 
   @override
   _MyOrderFinishState createState() => _MyOrderFinishState();
 }
 
-class _MyOrderFinishState extends State<MyOrderFinish> with AutomaticKeepAliveClientMixin{
+class _MyOrderFinishState extends State<MyOrderFinish> {
   UserService _userService = UserService();
   ActivityService _activityService = ActivityService();
   List<Order> _orderList = [];
-  int pagestatus = 0;//简单处理载入状态
-  ImHelper imhelper = new ImHelper();
-  GPService gpservice = new GPService();
-
-  @override
-  // TODO: implement wantKeepAlive
-  bool get wantKeepAlive => true;
+  int _pagestatus = 0;//简单处理载入状态
+  ImHelper _imhelper = new ImHelper();
+  GPService _gpservice = new GPService();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getMyOrder();
+    _getMyOrder();
   }
 
-  getMyOrder() async {
+  _getMyOrder() async {
     _orderList = await _userService.getMyOrderFinish(Global.profile.user!.token!, Global.profile.user!.uid, (String statecode, String error){
       ShowMessage.showToast(error);
     });
-    pagestatus = 1;
+    _pagestatus = 1;
     if (mounted){
       setState(() {
 
@@ -53,18 +48,28 @@ class _MyOrderFinishState extends State<MyOrderFinish> with AutomaticKeepAliveCl
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
-
-    return Container(
-      margin: EdgeInsets.all(5.0),
-      child: pagestatus == 0 ? Center(child: CircularProgressIndicator(
-        valueColor:  AlwaysStoppedAnimation(Global.profile.backColor),
-      )) : buildOrderList(),
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(icon: Icon(Icons.arrow_back_ios, size: 18,),
+          color: Colors.black,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title:  Text('待收货的订单',textAlign: TextAlign.center, style: TextStyle(color: Colors.black, fontSize: 16)),
+        centerTitle: true,
+      ),
+      body: Container(
+        margin: EdgeInsets.all(5.0),
+        child: _pagestatus == 0 ? Center(child: CircularProgressIndicator(
+          valueColor:  AlwaysStoppedAnimation(Global.profile.backColor),
+        )) : _buildOrderList(),
+      ),
     );
   }
 
 
-  Widget buildOrderList(){
+  Widget _buildOrderList(){
     Widget ret = SizedBox.shrink();
     List<Widget> lists = [];
 
@@ -145,7 +150,7 @@ class _MyOrderFinishState extends State<MyOrderFinish> with AutomaticKeepAliveCl
                           borderRadius: BorderRadius.all(Radius.circular(9))
                       ),
                       onPressed: () async {
-                        telCustomerCare("", e.touid);
+                        _telCustomerCare("", e.touid);
                       }
                   ),
                   SizedBox(width: 10,),
@@ -198,7 +203,7 @@ class _MyOrderFinishState extends State<MyOrderFinish> with AutomaticKeepAliveCl
   }
 
   Future<void> _gotoGoodPrice(String goodpriceid) async {
-    GoodPiceModel? goodprice = await gpservice.getGoodPriceInfo(goodpriceid);
+    GoodPiceModel? goodprice = await _gpservice.getGoodPriceInfo(goodpriceid);
     if (goodprice != null) {
       Navigator.pushNamed(
           context, '/GoodPriceInfo', arguments: {
@@ -226,9 +231,8 @@ class _MyOrderFinishState extends State<MyOrderFinish> with AutomaticKeepAliveCl
                   });
                   if(ret){
                     ShowMessage.showToast("退货成功");
-                    await imhelper.updateUserOrder(1);//已确认数量-1
-                    widget.updateCallBack;
-                    getMyOrder();
+                    await _imhelper.updateUserOrder(1);//已确认数量-1
+                    _getMyOrder();
                   }
                 },
               ),
@@ -262,9 +266,8 @@ class _MyOrderFinishState extends State<MyOrderFinish> with AutomaticKeepAliveCl
                   });
                   if(ret){
                     ShowMessage.showToast("确定成功");
-                    await imhelper.updateUserOrder(1);//已确认数量-1
-                    widget.updateCallBack;
-                    getMyOrder();
+                    await _imhelper.updateUserOrder(1);//已确认数量-1
+                    _getMyOrder();
                   }
                 },
               ),
@@ -280,7 +283,7 @@ class _MyOrderFinishState extends State<MyOrderFinish> with AutomaticKeepAliveCl
     );
   }
 
-  Future<void> telCustomerCare(String vcode, int touid) async {
+  Future<void> _telCustomerCare(String vcode, int touid) async {
     String timeline_id = "";
     //获取客服
     int uid = Global.profile.user!.uid;
@@ -295,14 +298,14 @@ class _MyOrderFinishState extends State<MyOrderFinish> with AutomaticKeepAliveCl
     else {
       timeline_id = uid.toString() + touid.toString();
     }
-    GroupRelation? groupRelation = await imhelper.getGroupRelationByGroupid(
+    GroupRelation? groupRelation = await _imhelper.getGroupRelationByGroupid(
         uid, timeline_id);
     if (groupRelation == null) {
       groupRelation = await _userService.joinSingleCustomer(
           timeline_id, uid, touid, Global.profile.user!.token!,
           vcode,  (String statusCode, String msg) {
         if(statusCode == "-1008"){
-          loadingBlockPuzzle(context, touid: touid);
+          _loadingBlockPuzzle(context, touid: touid);
           return;
         }
         else{
@@ -313,7 +316,7 @@ class _MyOrderFinishState extends State<MyOrderFinish> with AutomaticKeepAliveCl
     if (groupRelation != null) {
       List<GroupRelation> groupRelations = [];
       groupRelations.add(groupRelation);
-      int ret = await imhelper.saveGroupRelation(groupRelations);
+      int ret = await _imhelper.saveGroupRelation(groupRelations);
       if (Global.isInDebugMode) {
         print("保存本地是否成功：-----------------------------------");
         print(groupRelations[0].group_name1);
@@ -326,14 +329,14 @@ class _MyOrderFinishState extends State<MyOrderFinish> with AutomaticKeepAliveCl
   }
 
   //滑动拼图
-  loadingBlockPuzzle(BuildContext context, {barrierDismissible = true,required int touid}) {
+  _loadingBlockPuzzle(BuildContext context, {barrierDismissible = true,required int touid}) {
     showDialog<Null>(
       context: this.context,
       barrierDismissible: barrierDismissible,
       builder: (_) {
         return BlockPuzzleCaptchaPage(
           onSuccess: (v){
-            telCustomerCare(v, touid);
+            _telCustomerCare(v, touid);
           },
           onFail: (){
 

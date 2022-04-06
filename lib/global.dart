@@ -23,6 +23,8 @@ class Global {
   static String serviceIM =  "ws://ws.chulaiwanba.com:8082/ws";
   // static String serviceurl = "http://192.168.10.108:8080/";
   // static String serviceIM =  "ws://192.168.10.108:8082/ws";
+
+
   static String headimg = "images/icon_head_default.png";
   static String nullimg = "images/icon_nullimg.png";
   static String apphost = "https://www.chulaiwanba.com/";

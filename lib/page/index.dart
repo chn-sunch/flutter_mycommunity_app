@@ -12,15 +12,13 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../bloc/im/im_bloc.dart';
 import '../bloc/user/authentication_bloc.dart';
 import '../model/appinfo.dart';
 import '../service/commonjson.dart';
 import '../service/userservice.dart';
+import '../util/appupdate_util.dart';
 import '../util/showmessage_util.dart';
 import '../common/iconfont.dart';
 import '../page/home.dart';
@@ -46,7 +44,6 @@ class IndexPage extends StatefulWidget {
 }
 
 class _IndexPageState extends State<IndexPage> {
-  String? _downloadId;
   late List _pages;
   var _pageController = PageController();
   CommonJSONService _commonJSONService = new CommonJSONService();
@@ -54,8 +51,7 @@ class _IndexPageState extends State<IndexPage> {
   ReceivePort _port = ReceivePort();
   AppInfo? _appInfo;
   int _currentIndex = 0;
-  int _downloaderrowcount = 0;//下载失败尝试次数
-  _TaskInfo _downloadinfo = new _TaskInfo();
+
   Widget _drawer = SizedBox.shrink();
   List<String> _categorytypes = [];
   List<String> _selectList = [];
@@ -157,7 +153,7 @@ class _IndexPageState extends State<IndexPage> {
                             style: TextStyle(color: Colors.white, fontSize: 14),
                           ),
                           onPressed: (){
-                            this._launcherApp(appurl);
+                            AppupdateUtil.launcherApp(appurl);
                             Navigator.of(context).pop();
                           },
                         ),
@@ -180,186 +176,19 @@ class _IndexPageState extends State<IndexPage> {
     );
   }
 
-  _launcherApp (String appurl) async {
-    if (Platform.isAndroid) {
-      //直接下载更新
-      if(_downloaderrowcount == 0) {
-        await FlutterDownloader.initialize(
-          //表示是否在控制台显示调试信息
-          debug: true,
-        );
-      }
-
-      if (await _checkPermissionStorage()) {
-        bool isSuccess = IsolateNameServer.registerPortWithName(
-            _port.sendPort, 'flutter_mycommunity_app');
-        if (!isSuccess) {
-          if(_downloaderrowcount > 2){
-            ShowMessage.showToast("下载更新包失败");
-            return;
-          }
-          _downloaderrowcount++;
-          _unbindBackgroundIsolate();
-          _launcherApp(appurl);
-          return;
-        }
-
-        if(_downloaderrowcount == 0) {
-          _port.listen((dynamic data) {
-            print('UI Isolate Callback: $data');
-            String taskId = data[0];
-            DownloadTaskStatus status = data[1];
-            int progress = data[2];
-
-            if (_downloadinfo.taskId == taskId) {
-              if (status == DownloadTaskStatus.undefined) {
-                _startDownload(appurl);
-              }
-              else if (status == DownloadTaskStatus.complete) {
-                print(" DownloadTaskStatus.complete");
-                _delete(taskId);
-              }
-              else if (status == DownloadTaskStatus.paused) {
-                _resumeDownload(taskId);
-              }
-              else if (status == DownloadTaskStatus.failed) {
-                _retryDownload(taskId);
-              }
-            }
 
 
-            print("status: $status");
-            print("progress: $progress");
-            print("id == downloadId: ${taskId == _downloadId}");
-          });
-        }
-        FlutterDownloader.registerCallback(downloadCallback);
 
 
-        final tasks = await FlutterDownloader.loadTasks();
-        _downloadinfo.name = "android_apk";
-        _downloadinfo.link = appurl;
-
-        if(tasks != null && tasks.length > 0) {
-          tasks.forEach((task) async {
-            if (_downloadinfo.link == task.url) {
-              await FlutterDownloader.remove(
-                  taskId: task.taskId, shouldDeleteContent: true);
-              _unbindBackgroundIsolate();
-              _downloaderrowcount++;
-              _launcherApp(appurl);
-              // _downloadinfo.taskId = task.taskId;
-              // _downloadinfo.status = task.status;
-              // _downloadinfo.progress = task.progress;
-            }
-          });
-        }
-        else{
-          _startDownload(appurl);
-        }
-      }
-    } else if (Platform.isIOS) {
-      //ios跳转appstore更新
-      if (await canLaunch(appurl)) {
-        await launch(appurl);
-      } else {
-        ShowMessage.showToast(
-          "安装文件不存在，请去苹果商店更新",
-        );
-      }
-    }
-  }
-
-  void _retryDownload(String taskId) async {
-    String? newTaskId = await FlutterDownloader.retry(taskId: taskId);
-    _downloadinfo.taskId = newTaskId;
-  }
-
-  void _resumeDownload(String taskId) async {
-    String? newTaskId = await FlutterDownloader.resume(taskId: taskId);
-    _downloadinfo.taskId = newTaskId;
-  }
-
-  void _delete(taskId) async {
-    print("delete ----------------------------------------------------------");
-    Timer(Duration(seconds: 3), () async {
-      await FlutterDownloader.open(taskId: taskId);
-      //await OpenFile.open(path);
-      await FlutterDownloader.remove(
-          taskId: taskId, shouldDeleteContent: false);
-    });
-
-    print("delete11 ----------------------------------------------------------");
-  }
-
-  Future<bool> _checkPermissionStorage() async {
-    var status = await Permission.storage.status;
-    if (!status.isGranted) {
-      status = await Permission.storage.request();
-      if (status.isGranted) {
-        return true;
-      }
-    } else {
-      return true;
-    }
-    return false;
-  }
-
-  Future _startDownload(String link) async {
-    // final tasks = await FlutterDownloader.loadTasks();
-    // if (tasks != null && tasks.length > 0) {
-    //   bool hasExisted = tasks.any((DownloadTask downloadTask) => downloadTask.url == link);
-    //   if (hasExisted) {
-    //     debugPrint('任务已经存在');
-    //     return;
-    //   }
-    // }
-
-    _downloadinfo.taskId = await FlutterDownloader.enqueue(
-      url: link,
-      savedDir: await _findLocalPath(),
-      showNotification: true,
-      openFileFromNotification: true,
-    );
-  }
-
-  Future<String> _findLocalPath() async {
-    final directory = Platform.isAndroid
-        ? await getExternalStorageDirectory()
-        : await getApplicationSupportDirectory();
-    String localPath = directory!.path + '/Download';
-    final savedDir = Directory(localPath);
-    bool hasExisted = await savedDir.exists();
-    if (!hasExisted) {
-      savedDir.create();
-    }
-    return localPath;
-  }
-
-  static void downloadCallback(
-      String id, DownloadTaskStatus status, int progress) {
-    print(
-        'Background Isolate Callback: task ($id) is in status ($status) and process ($progress)');
-    final SendPort? send = IsolateNameServer.lookupPortByName('flutter_mycommunity_app');
-    if(send != null)
-      send.send([id, status, progress]);
-  }
 
   @override
   void dispose() {
     super.dispose();
-
-    if(_downloadinfo.taskId != null && _downloadinfo.taskId != "") {
-      FlutterDownloader.remove(
-          taskId: _downloadinfo.taskId!, shouldDeleteContent: true);
-      _unbindBackgroundIsolate();
-    }
+    AppupdateUtil.dispose();
     _pageController.dispose();
   }
 
-  void _unbindBackgroundIsolate() {
-    IsolateNameServer.removePortNameMapping('flutter_mycommunity_app');
-  }
+
 
   void _pageJump(index){
     if(index == 0 || index == 1 || index == 2) {
@@ -546,6 +375,7 @@ class _IndexPageState extends State<IndexPage> {
               newImMode = state.sysMessage.newImMode;
               newActivity = state.sysMessage.newMyMode;
             }
+
             return BottomNavigationBar(
               type: BottomNavigationBarType.fixed,
               unselectedItemColor: Colors.black54,

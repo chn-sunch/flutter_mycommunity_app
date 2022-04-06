@@ -89,6 +89,7 @@ class ImBloc extends Bloc<ImEvent, ImState> {
               errorCallBack);
         }
       }
+
       if(event is NewMessage){
         //活动群聊同步
         List<GroupRelation> grouprelationlist = [];
@@ -115,6 +116,7 @@ class ImBloc extends Bloc<ImEvent, ImState> {
         NewMessageState newMessageState = await setAppUnReadCount(event.user.uid);
         yield NewMessageState(sysMessage: newMessageState.sysMessage, groupRelations: newMessageState.groupRelations,  msgMessage: timeLineSyncs);
       }
+
       if(event is NewCommunityMessage){
         List<GroupRelation> grouprelationlist = [];
         List<TimeLineSync> timeLineSyncs = [];

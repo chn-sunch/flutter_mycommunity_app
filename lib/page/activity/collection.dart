@@ -17,9 +17,9 @@ class MyCollectionActivity extends StatefulWidget{
 
 class _MyCollectionActivityState extends State<MyCollectionActivity>  {
   late User user;
-  List<Activity> activitys = [];
+  List<Activity> _activitys = [];
   ImHelper _imHelper = new ImHelper();
-  bool isPageLoad = false;
+  bool _isPageLoad = false;
   double _activityContentHeight = 1.0;//瀑布组件高度
   double _pageWidth = 0;
   double _leftHeight = 0;//左边列的高度
@@ -27,8 +27,8 @@ class _MyCollectionActivityState extends State<MyCollectionActivity>  {
   double _contentText = 83;//图片下面的文字描述与间距
 
   getMyCollection() async {
-    activitys = await _imHelper.selActivityCollectionByUid(Global.profile.user!.uid);
-    isPageLoad = true;
+    _activitys = await _imHelper.selActivityCollectionByUid(Global.profile.user!.uid);
+    _isPageLoad = true;
     setState(() {
 
     });
@@ -54,12 +54,26 @@ class _MyCollectionActivityState extends State<MyCollectionActivity>  {
     _pageWidth = MediaQuery.of(context).size.width / 2 -8;
 
 
-    return  isPageLoad ? ((activitys!= null && activitys.length > 0) ? ListView(
-        children: buildContent( activitys)
-    ) : Center(child: Text('快和小伙伴们一起去玩吧', style: TextStyle(color: Colors.black54, fontSize: 14, )),)): Center(
-      child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation(Global.profile.backColor)
-      ),
+    return   Scaffold(
+        appBar: AppBar(
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios, size: 18,),
+            color: Colors.black,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          title:  Text('收藏的商家活动',textAlign: TextAlign.center, style: TextStyle(color: Colors.black, fontSize: 16)),
+          centerTitle: true,
+        ),
+        body: _isPageLoad ?  ((_activitys == null || _activitys.length == 0) ? Center(
+          child: Text('还没有收藏的活动', style: TextStyle(color: Colors.black54, fontSize: 14, ),),
+        ) : ListView(
+          children: buildContent(_activitys),
+        )) : Center(
+          child: CircularProgressIndicator(
+            valueColor:  AlwaysStoppedAnimation(Global.profile.backColor),
+          ),
+        )
     ) ;
   }
 
@@ -72,6 +86,7 @@ class _MyCollectionActivityState extends State<MyCollectionActivity>  {
 
     return contents;
   }
+
 
   Widget indexPageView(List<Activity> acivitys){
     _getContentHeight(acivitys);

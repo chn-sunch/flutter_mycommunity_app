@@ -1,15 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:tobias/tobias.dart' as tobias;
 
 import '../../model/grouppurchase/goodpice_model.dart';
 import '../../model/grouppurchase/skuspecs.dart';
 import '../../service/gpservice.dart';
-import '../../service/activity.dart';
 import '../../widget/my_divider.dart';
 import '../../widget/circle_headimage.dart';
 import '../../util/showmessage_util.dart';
-import '../../util/common_util.dart';
 
 import '../../global.dart';
 import 'widget/numberwidget.dart';
@@ -44,22 +41,20 @@ class _CreateOrderPageState extends State<CreateOrder> {
   List<Skuspecs> skuSpecsList = [];
   int _speaceCount = 0; //规格的数量
 
-  String priceText = "";//初始化选择提示文本
-  String priceinfo = "";//价格描述
-  String seltext = "";//选的内容文本
-  num selprice = -1;//选中显示的价格
-  num saleprice = -1;//实际价格，优惠等
-  String specsid = "";
-  List responseJson = [];
-
-  ActivityService _activityservice = ActivityService();
+  String _priceinfo = "";//价格描述
+  String _seltext = "";//选的内容文本
+  num _selprice = -1;//选中显示的价格
+  num _saleprice = -1;//实际价格，优惠等
+  String _specsid = "";
+  List _responseJson = [];
 
 
-  getGoodPriceSpecsList() async {
+
+  _getGoodPriceSpecsList() async {
     skuSpecsList = await _gpService.getProductSpecsList(widget.goodPiceModel.goodpriceid);
     if(skuSpecsList != null && skuSpecsList.length > 0){
-      responseJson = json.decode(skuSpecsList[0].spdata);
-      _speaceCount = responseJson.length;
+      _responseJson = json.decode(skuSpecsList[0].spdata);
+      _speaceCount = _responseJson.length;
 
       if(skuSpecsList != null && skuSpecsList.length > 0){
         skuSpecsList.sort((l, r) => l.cost.compareTo(r.cost));
@@ -67,10 +62,10 @@ class _CreateOrderPageState extends State<CreateOrder> {
         num max = skuSpecsList[skuSpecsList.length - 1].cost;
 
         if(min != max){
-          priceinfo = '${min}~${max}';
+          _priceinfo = '${min}~${max}';
         }
         else{
-          priceinfo = '${min}';
+          _priceinfo = '${min}';
         }
       }
 
@@ -86,11 +81,8 @@ class _CreateOrderPageState extends State<CreateOrder> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
-    getGoodPriceSpecsList();
-
-
-    getSelValue( );
+    _getGoodPriceSpecsList();
+    _getSelValue( );
   }
 
   @override
@@ -100,22 +92,22 @@ class _CreateOrderPageState extends State<CreateOrder> {
     //处理规格种类
 
     List<Widget> specsContent = []; //活动内容
-    if(responseJson.length == 1)
-      _speace1Name =  responseJson[0]["key"].toString();
+    if(_responseJson.length == 1)
+      _speace1Name =  _responseJson[0]["key"].toString();
 
-    if(responseJson.length > 1)
-      _speace2Name =  responseJson[1]["key"].toString();
+    if(_responseJson.length > 1)
+      _speace2Name =  _responseJson[1]["key"].toString();
 
-    if(seltext.isEmpty){
-      seltext = '请选择 ${_speace1Name}  ${_speace2Name}';
+    if(_seltext.isEmpty){
+      _seltext = '请选择 ${_speace1Name}  ${_speace2Name}';
     }
     //keys规格
-    for (int i = 0; i < responseJson.length; i++) {
+    for (int i = 0; i < _responseJson.length; i++) {
       List<Widget> values = [];//规格值
       for(int j =0; j < skuSpecsList.length; j++){
         List temJson = json.decode(skuSpecsList[j].spdata);
         //最多只有两种规格
-        if(responseJson[i]["key"].toString() == temJson[0]["key"].toString()){
+        if(_responseJson[i]["key"].toString() == temJson[0]["key"].toString()){
           values.add(ChoiceChip(
             selectedShadowColor: Global.profile.backColor,
             label: Text(temJson[0]["value"].toString()),
@@ -124,14 +116,14 @@ class _CreateOrderPageState extends State<CreateOrder> {
               setState(() {
                 _selectIndexSpeace1 = j;
                 _selectIndexValue1 = temJson[0]["value"].toString();
-                specsid = skuSpecsList[j].specsid.toString();
-                getSelValue( );
+                _specsid = skuSpecsList[j].specsid.toString();
+                _getSelValue( );
               });
             },
           ));
         }
         if(temJson.length > 1) {
-          if (responseJson[i]["key"].toString() ==
+          if (_responseJson[i]["key"].toString() ==
               temJson[1]["key"].toString()) {
             values.add(ChoiceChip(
               selectedShadowColor: Global.profile.backColor,
@@ -141,7 +133,7 @@ class _CreateOrderPageState extends State<CreateOrder> {
                 setState(() {
                   _selectIndexSpeace2 = j;
                   _selectIndexValue2 = temJson[1]["value"].toString();
-                  getSelValue();
+                  _getSelValue();
                 });
               },
             ));
@@ -156,7 +148,7 @@ class _CreateOrderPageState extends State<CreateOrder> {
               children: [
                 Container(
                   alignment: Alignment.centerLeft,
-                  child: Text(responseJson[i]["key"], style: TextStyle(color:  Colors.black87, fontSize: 16),),
+                  child: Text(_responseJson[i]["key"], style: TextStyle(color:  Colors.black87, fontSize: 16),),
                 ),
                 Wrap(
                   spacing: 13,
@@ -186,18 +178,18 @@ class _CreateOrderPageState extends State<CreateOrder> {
                 addValueChanged: (num){
                   setState(() {
                     _productNum = num;
-                    getSelValue();
+                    _getSelValue();
                   });
                 },
                 removeValueChanged: (num){
                   setState(() {
                     _productNum = num;
-                    getSelValue();
+                    _getSelValue();
                   });                },
                 updateValueChanged: (num){
                   setState(() {
                     _productNum = num;
-                    getSelValue();
+                    _getSelValue();
                   });                },
               )
             ],
@@ -216,7 +208,8 @@ class _CreateOrderPageState extends State<CreateOrder> {
         ),
         title: Text(widget.goodPiceModel.title, style: TextStyle(color: Colors.black, fontSize: 16)),
         centerTitle: true,
-      ),      body: Column(
+      ),
+      body: Column(
           children: [
             buildHeadInfo(),
             Expanded(
@@ -225,23 +218,23 @@ class _CreateOrderPageState extends State<CreateOrder> {
               ),
             ),
 
-            buildBtn()
+            _buildBtn()
           ]
       ),
     );
   }
 
-  void getSelValue(){
+  void _getSelValue(){
     //只有一种规格
     if(_speaceCount == 1){
       if(_selectIndexValue1 != ""){
         for(int i =0; i < skuSpecsList.length; i++){
           List temJson = json.decode(skuSpecsList[i].spdata);
           if(_selectIndexValue1 == temJson[0]["value"].toString()) {
-            selprice = skuSpecsList[i].cost * _productNum;;
-            saleprice = skuSpecsList[i].cost * widget.goodPiceModel.discount * _productNum;;
-            saleprice = num.parse(saleprice.toStringAsFixed(2));
-            seltext = '已选择： ${_selectIndexValue1}';
+            _selprice = skuSpecsList[i].cost * _productNum;;
+            _saleprice = skuSpecsList[i].cost * widget.goodPiceModel.discount * _productNum;;
+            _saleprice = num.parse(_saleprice.toStringAsFixed(2));
+            _seltext = '已选择： ${_selectIndexValue1}';
             _selectIndexValue2 = "";
           }
         }
@@ -251,43 +244,43 @@ class _CreateOrderPageState extends State<CreateOrder> {
     //有两种规格
     if(_speaceCount == 2){
       if(_selectIndexValue1 != ""){
-        seltext = '请选择： ${_speace2Name}';
+        _seltext = '请选择： ${_speace2Name}';
       }
 
       if(_selectIndexValue2 != ""){
-        seltext = '请选择： ${_speace1Name}';
+        _seltext = '请选择： ${_speace1Name}';
       }
 
       if(_selectIndexValue1.isNotEmpty && _selectIndexValue2.isNotEmpty){
         for(int i =0; i < skuSpecsList.length; i++){
           List temJson = json.decode(skuSpecsList[i].spdata);
           if(_selectIndexValue1 == temJson[0]["value"].toString() && _selectIndexValue2 == temJson[1]["value"].toString()) {
-            selprice = skuSpecsList[i].cost * _productNum;
-            saleprice = skuSpecsList[i].cost * widget.goodPiceModel.discount * _productNum;
+            _selprice = skuSpecsList[i].cost * _productNum;
+            _saleprice = skuSpecsList[i].cost * widget.goodPiceModel.discount * _productNum;
             //saleprice.toStringAsFixed(2);
-            saleprice = num.parse(saleprice.toStringAsFixed(2));
+            _saleprice = num.parse(_saleprice.toStringAsFixed(2));
           }
         }
 
-        seltext = '已选择： ${_selectIndexValue1} ${_selectIndexValue2}';
+        _seltext = '已选择： ${_selectIndexValue1} ${_selectIndexValue2}';
       }
     }
   }
 
   Widget buildHeadInfo(){
     Widget price;
-    if(selprice == -1){
-      price = Text('￥${priceinfo}', style: TextStyle(color: Global.profile.backColor, fontSize: 15),);
+    if(_selprice == -1){
+      price = Text('￥${_priceinfo}', style: TextStyle(color: Global.profile.backColor, fontSize: 15),);
     }
-    else if(selprice == saleprice){
-      price = Text('￥${selprice}', style: TextStyle(color: Global.profile.backColor, fontSize: 15),);
+    else if(_selprice == _saleprice){
+      price = Text('￥${_selprice}', style: TextStyle(color: Global.profile.backColor, fontSize: 15),);
     }
     else {
       price = Row(
         children: [
-          Text('￥${selprice}', style: TextStyle(color: Global.profile.backColor, fontSize: 16),),
+          Text('￥${_selprice}', style: TextStyle(color: Global.profile.backColor, fontSize: 16),),
           SizedBox(width: 10,),
-          Text('折后 ￥${saleprice}', style: TextStyle(color: Global.profile.backColor, fontSize: 14))
+          Text('折后 ￥${_saleprice}', style: TextStyle(color: Global.profile.backColor, fontSize: 14))
         ],
       );
     }
@@ -311,7 +304,7 @@ class _CreateOrderPageState extends State<CreateOrder> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   price,
-                  Text(seltext, style: TextStyle(color:  Colors.black87, fontSize: 15),)
+                  Text(_seltext, style: TextStyle(color:  Colors.black87, fontSize: 15),)
                 ],
               ),
             ),
@@ -321,7 +314,7 @@ class _CreateOrderPageState extends State<CreateOrder> {
     );
   }
 
-  Widget buildBtn(){
+  Widget _buildBtn(){
     return Container(
       padding: EdgeInsets.only(left: 10, right: 10),
         color: Colors.white,
@@ -332,57 +325,40 @@ class _CreateOrderPageState extends State<CreateOrder> {
           children: [
             Expanded(
               child: TextButton(
-                  child: Text('立即支付', style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),),
+                  child: Text('确定选择', style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),),
                   style: ButtonStyle(
-                    backgroundColor:  specsid == "" ? MaterialStateProperty.all(Global.defredcolor.withAlpha(119)) :
+                    backgroundColor:  _specsid == "" ? MaterialStateProperty.all(Global.defredcolor.withAlpha(119)) :
                       MaterialStateProperty.all(Global.defredcolor),
                     shape: MaterialStateProperty.all(
                         RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(9))),
                   ) ,
                   onPressed: () async {
-                    if(!Global.isInDebugMode) {
-                      bool isInstalled = await tobias.isAliPayInstalled();
-                      if (!isInstalled) {
-                        ShowMessage.showToast("需要有支付宝客户端才能支付");
-                        return;
-                      }
-                    }
-
-                    if(specsid == ""){
+                    if(_specsid == ""){
                       return;
                     }
 
-                    String orderinfo = await _activityservice.getActivityOrder(Global.profile.user!.uid,
-                        Global.profile.user!.token!, widget.actid, widget.goodPiceModel.goodpriceid, specsid, _productNum, "", errorCallBack);
-                    //调用支付宝接口
-                    if(orderinfo != null && orderinfo.isNotEmpty) {
-                      Map ret;
-                      ret = await tobias.aliPay(orderinfo);
-                      if(ret != null && ret["resultStatus"] == "9000"){
-                        Navigator.pushReplacementNamed(context, '/OrderFinish', result: 1,
-                            arguments: {
-                              "goodprice":  widget.goodPiceModel,
-                              "gpprice": saleprice,
-                              "productnum": _productNum,
-                              "ordertime": CommonUtil.getTime()
-                            });
-                      }
-                      else{
-                        // ShowMessage.showToast("支付失败");
-                      }
+                    String speaceName = "";
+
+                    if(_speace1Name != ""){
+                      speaceName += _speace1Name + "|";
                     }
 
+                    if(_speace2Name != ""){
+                      speaceName += _speace2Name + "|";
+                    }
+                    if(speaceName != "") {
+                      speaceName = speaceName.substring(0, speaceName.length -1);
+                    }
 
+                    Navigator.pushNamed(context, '/OrderInfo',
+                        arguments: {"goodprice": widget.goodPiceModel, "specsid": _specsid,
+                        "productNum": _productNum, "specsname": speaceName , "saleprice": _saleprice});
                   }),
             ),
           ],
         )
     );
-  }
-
-  errorCallBack(String statusCode, String msg) {
-    ShowMessage.showToast(msg);
   }
 }
 
