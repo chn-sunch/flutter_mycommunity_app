@@ -16,6 +16,7 @@ class Order{
   int? paymenttype;
   String goodpriceid = "";
   String goodpricesku = "";
+  String goodpricebrand = "";
   String? productname;
   String? productpic;
   int? creategpuid;//创建活动的发起人
@@ -29,11 +30,12 @@ class Order{
   String goodpricetitle = "";
   String goodpricepic = "";
   int touid = 0;
+  String goodpricespeacename;
 
 
   Order(this.orderid, this.gpactid, this.gpprice, this.uid, this.createtime, this.updatetime, this.paymenttype, this.goodpriceid, this.goodpricesku,
       this.productname, this.productpic, this.creategpuid, this.specsid, this.user, this.activity, this.ordertype, this.orderstatus,
-      this.productnum, this.expirestime, this.goodpricetitle, this.goodpricepic, this.touid);
+      this.productnum, this.expirestime, this.goodpricetitle, this.goodpricepic, this.touid, this.goodpricebrand, this.goodpricespeacename);
 
   factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
 }

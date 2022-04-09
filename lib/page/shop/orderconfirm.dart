@@ -12,39 +12,30 @@ import '../../widget/circle_headimage.dart';
 
 import 'widget/numberwidget.dart';
 
-class OrderInfo extends StatefulWidget {
+class OrderConfirm extends StatefulWidget {
   Object? arguments;
 
+  late GoodPiceModel goodPiceModel;
   String specsid = "";
   String specsname = "";
   int productNum = 0;
   num saleprice = 0;//选中显示的价格
   String actid = "";
-  String title = "";
-  String brand = "";
-  String pic = "";
-  String goodpriceid = "";
-  String orderid = "";
 
-  OrderInfo({required this.arguments}){
-    goodpriceid = (arguments as Map)["goodpriceid"];
-    title = (arguments as Map)["title"];
-    brand = (arguments as Map)["brand"];
-    pic = (arguments as Map)["pic"];
+  OrderConfirm({required this.arguments}){
+    goodPiceModel = (arguments as Map)["goodprice"];
     specsid = (arguments as Map)["specsid"];
     productNum = (arguments as Map)["productNum"];
     specsname = (arguments as Map)["specsname"];
     saleprice = (arguments as Map)["saleprice"];
-    orderid = (arguments as Map)["orderid"];
-
     actid = (arguments as Map)["actid"] != null ?  (arguments as Map)["actid"]  : "";
   }
 
   @override
-  _OrderInfoState createState() => _OrderInfoState();
+  _OrderConfirmState createState() => _OrderConfirmState();
 }
 
-class _OrderInfoState extends State<OrderInfo> {
+class _OrderConfirmState extends State<OrderConfirm> {
   ActivityService _activityservice = ActivityService();
   num _saleprice = 0;
   int _productNum = 0;
@@ -86,7 +77,7 @@ class _OrderInfoState extends State<OrderInfo> {
                       children: [
                         Padding(
                           padding: EdgeInsets.only(left: 15, top: 20, bottom: 5),
-                          child: Text(widget.brand == "自营"? "官方自营" : widget.brand,
+                          child: Text(widget.goodPiceModel.brand == "自营"? "官方自营" : widget.goodPiceModel.brand,
                             style: TextStyle(fontSize: 16, color: Colors.black),),
                         ),
                         Row(
@@ -97,7 +88,7 @@ class _OrderInfoState extends State<OrderInfo> {
                               margin: EdgeInsets.only(left: 15, right: 10, top: 10),
                               height: 100,
                               width: 100,
-                              child: ClipRRectOhterHeadImageContainer(imageUrl: widget.pic,  cir: 10,),
+                              child: ClipRRectOhterHeadImageContainer(imageUrl: widget.goodPiceModel.pic,  cir: 10,),
                             ),
                             Expanded(child: Padding(
                               padding: EdgeInsets.only(left: 0, right: 10, top: 10),
@@ -107,7 +98,7 @@ class _OrderInfoState extends State<OrderInfo> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        child: Text(widget.title, style: TextStyle(overflow: TextOverflow.ellipsis),),
+                                        child: Text(widget.goodPiceModel.title, style: TextStyle(overflow: TextOverflow.ellipsis),),
                                       ),
                                       Container(
                                         alignment: Alignment.centerLeft,
@@ -125,7 +116,25 @@ class _OrderInfoState extends State<OrderInfo> {
                                         child: Text('￥${widget.saleprice}',
                                           style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),),
                                       ),
+                                      Align(
+                                        alignment: Alignment.center,
+                                        child: NumberControllerWidget(
+                                          numText: _productNum.toString(),
+                                          addValueChanged: (num){
 
+                                          },
+                                          removeValueChanged: (num){
+                                          },
+                                          updateValueChanged: (num){
+                                            setState(() {
+                                              _productNum = num;
+                                              setState(() {
+                                                _saleprice = _productNum * widget.saleprice;
+                                              });
+                                            });
+                                          },
+                                        ),
+                                      )
                                     ],
                                   ),
                                 ],
@@ -247,21 +256,16 @@ class _OrderInfoState extends State<OrderInfo> {
     }
 
     Map<dynamic, dynamic>? orderinfo = await _activityservice.getActivityOrder(Global.profile.user!.uid,
-    Global.profile.user!.token!, widget.actid, widget.goodpriceid, widget.specsid, _productNum, widget.orderid, _paymenttype,
-        widget.specsname,  _errorCallBack);
+    Global.profile.user!.token!, widget.actid, widget.goodPiceModel.goodpriceid, widget.specsid,
+        _productNum, "", _paymenttype, widget.specsname, _errorCallBack);
     //调用支付宝接口
     if(orderinfo != null && orderinfo.isNotEmpty) {
       Map ret;
       ret = await tobias.aliPay(orderinfo['data']);
       if(ret != null && ret["resultStatus"] == "9000"){
-        GoodPiceModel goodPiceModel = GoodPiceModel(widget.goodpriceid, widget.title, "", 0, widget.brand,
-            0, "", "", "", widget.pic, 0, 0, "", "",
-            0, "", "", 0, 0, 0, 0,
-            0, 0, "", "", "", "", 0, 0, 0, 0, 0);
-
         Navigator.pushReplacementNamed(context, '/OrderFinish', result: 1,
           arguments: {
-          "goodprice": goodPiceModel,
+          "goodprice":  widget.goodPiceModel,
           "gpprice": widget.saleprice,
           "productnum": _productNum,
           "ordertime": CommonUtil.getTime()
@@ -281,22 +285,18 @@ class _OrderInfoState extends State<OrderInfo> {
       }
     }
 
+
     Map<dynamic, dynamic>? orderinfo = await _activityservice.getActivityOrder(Global.profile.user!.uid,
-        Global.profile.user!.token!, widget.actid, widget.goodpriceid, widget.specsid, _productNum, widget.orderid,
+        Global.profile.user!.token!, widget.actid, widget.goodPiceModel.goodpriceid, widget.specsid, _productNum, "",
         _paymenttype, widget.specsname, _errorCallBack);
 
     if(orderinfo != null) {
       weChatResponseEventHandler.listen((res) {
         if (res is WeChatPaymentResponse) {
           if(res.isSuccessful){
-            GoodPiceModel goodPiceModel = GoodPiceModel(widget.goodpriceid, widget.title, "", 0, widget.brand,
-                0, "", "", "", widget.pic, 0, 0, "", "",
-                0, "", "", 0, 0, 0, 0,
-                0, 0, "", "", "", "", 0, 0, 0, 0, 0);
-
             Navigator.pushReplacementNamed(context, '/OrderFinish', result: 1,
                 arguments: {
-                  "goodprice": goodPiceModel,
+                  "goodprice": widget.goodPiceModel,
                   "gpprice": widget.saleprice,
                   "productnum": _productNum,
                   "ordertime": CommonUtil.getTime()
@@ -315,6 +315,8 @@ class _OrderInfoState extends State<OrderInfo> {
         timeStamp: int.parse(orderinfo['timeStamp']),
         sign: orderinfo['paySign'],
       );
+
+
     }
   }
 

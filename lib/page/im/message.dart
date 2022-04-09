@@ -495,6 +495,8 @@ class _MyMessageState extends State<MyMessage> with TickerProviderStateMixin {
     List<TimeLineSync> temLine = [];
     String time = "";
 
+    ShowMessage.showToast(this._msgcontent);
+
     String serviceData = await _imService.postSendMessage(_groupRelation.timeline_id, Global.profile.user!.token!,
         Global.profile.user!.uid, this._msgcontent, this._contenttype, _groupRelation.relationtype!,  captchaVerification,  errorCallBack);
 

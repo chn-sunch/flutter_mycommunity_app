@@ -163,10 +163,8 @@ class _ShareViewState extends State<ShareView> {
     Widget gohomepage = Container(
       width: 50,
       alignment: Alignment.center,
-      child: InkWell(
-        child: IconText("去主页",icon: Icon(IconFont.icon_home_fill, color: Colors.orange, size: 30,),
-          style: TextStyle(color: Colors.black87, fontSize: 13), direction: Axis.vertical, onTap: (){},),
-        onTap: (){
+      child: IconText("去主页",icon: Icon(IconFont.icon_home_fill, color: Colors.orange, size: 30,),
+        style: TextStyle(color: Colors.black87, fontSize: 13), direction: Axis.vertical, onTap: (){
           if(Global.profile.user == null) {
             if(widget.createuid != null)
               Navigator.pushNamed(context, '/OtherProfile', arguments: {"uid": widget.createuid});
@@ -176,28 +174,23 @@ class _ShareViewState extends State<ShareView> {
                 arguments: {"uid": widget.createuid});
           }
           else if(widget.createuid != null && widget.createuid == Global.profile.user!.uid)
-            Navigator.pushNamed(context, '/MyProfile');                          },
-      ),
+            Navigator.pushNamed(context, '/MyProfile');
+        },),
     );
     Widget report = Container(
       width: 50,
       alignment: Alignment.center,
-      child: _isMySelf ? SizedBox.shrink() : InkWell(
-        child: IconText("举报",icon: Icon(IconFont.icon_jubao, color: Colors.red, size: 30,),
-          style: TextStyle(color: Colors.black87, fontSize: 13), direction: Axis.vertical, onTap: (){},),
-        onTap: (){
+      child: _isMySelf ? SizedBox.shrink() : IconText("举报",icon: Icon(IconFont.icon_jubao, color: Colors.red, size: 30,),
+        style: TextStyle(color: Colors.black87, fontSize: 13), direction: Axis.vertical, onTap: (){
           Navigator.pushNamed(context, '/ReportActivity', arguments: {"actid": widget.actid, "sourcetype":
           int.parse(widget.sharedtype!), "touid": widget.createuid});
-        },
-      ),
+        },),
     );
     Widget like = Container(
       width: 50,
       alignment: Alignment.center,
-      child: _isMySelf ? SizedBox.shrink() : InkWell(
-        child: IconText(_strnotinterest,icon: Icon(IconFont.icon_buganxingqumian, color: Colors.blueGrey, size: 30,),
-          style: TextStyle(color: Colors.black87, fontSize: 13), direction: Axis.vertical, onTap: (){},),
-        onTap: () async {
+      child: _isMySelf ? SizedBox.shrink() : IconText(_strnotinterest,icon: Icon(IconFont.icon_buganxingqumian, color: Colors.blueGrey, size: 30,),
+        style: TextStyle(color: Colors.black87, fontSize: 13), direction: Axis.vertical, onTap: () async {
           if(widget.createuid == Global.profile.user!.uid){
             ShowMessage.showToast("不能对自己执行这种操作哦~");
             Navigator.pop(context);
@@ -279,8 +272,7 @@ class _ShareViewState extends State<ShareView> {
           }
 
           Navigator.pop(context);
-        },
-      ),
+        },),
     );
     Widget padding = Container(
       width: 50,
@@ -293,18 +285,15 @@ class _ShareViewState extends State<ShareView> {
       //如果是自己的动态可以删除
       Widget del = Container(
         width: 50,
-        child: InkWell(
-          child: IconText("删除",icon: Icon(Icons.delete, color: Colors.red, size: 33,),
-            style: TextStyle(color: Colors.black87, fontSize: 13), direction: Axis.vertical, onTap: (){},),
-          onTap: () async {
+        child: IconText("删除",icon: Icon(Icons.delete, color: Colors.red, size: 33,),
+          style: TextStyle(color: Colors.black87, fontSize: 13), direction: Axis.vertical, onTap: () async {
             Navigator.pop(context);
             await _asked().then((value){
               if(value){
                 Navigator.pop(context, "refresh");
               }
             });
-          },
-        ),
+          },),
       );
       buttons.add(del);
       buttons.add(padding);
@@ -343,26 +332,20 @@ class _ShareViewState extends State<ShareView> {
                         Container(
                           width: 50,
                           alignment: Alignment.center,
-                          child: InkWell(
-                            child: IconText("聊天",icon: Icon(IconFont.icon_navbar_xiaoxi_xuanzhong, color: Colors.cyan, size: 30,),
-                              style: TextStyle(color: Colors.black87, fontSize: 13), direction: Axis.vertical, onTap: (){},),
-                            onTap: (){
+                          child: IconText("聊天",icon: Icon(IconFont.icon_navbar_xiaoxi_xuanzhong, color: Colors.cyan, size: 30,),
+                            style: TextStyle(color: Colors.black87, fontSize: 13), direction: Axis.vertical, onTap: (){
                               Navigator.pushNamed(context, '/SharedRelationList', arguments: {"content": widget.content, "contentid": widget.contentid,
                                 "sharedtype": widget.sharedtype, "image": img, "localimg": widget.image});
-                            },
-                          ),
+                            },),
                         ),
                         Container(
                           width: 50,
                           alignment: Alignment.center,
-                          child: widget.sharedtype == "0" && widget.sharedtype != "2" ? InkWell(
-                            child: IconText("粉丝",icon: Icon(IconFont.icon_haoyou, color: Colors.pinkAccent, size: 35,),
-                                style:  TextStyle(color: Colors.black87, fontSize: 13), direction: Axis.vertical,onTap: (){}),
-                            onTap: (){
-                              Navigator.pushNamed(context, '/ShardeFansList', arguments: {"content": widget.content, "contentid": widget.contentid,
-                                "sharedtype": widget.sharedtype, "image": img, "localimg": widget.image});
-                            },
-                          ): SizedBox(width: 39,),
+                          child: widget.sharedtype == "0" && widget.sharedtype != "2" ? IconText("粉丝",icon: Icon(IconFont.icon_haoyou, color: Colors.pinkAccent, size: 35,),
+                              style:  TextStyle(color: Colors.black87, fontSize: 13), direction: Axis.vertical,onTap: (){
+                                Navigator.pushNamed(context, '/ShardeFansList', arguments: {"content": widget.content, "contentid": widget.contentid,
+                                  "sharedtype": widget.sharedtype, "image": img, "localimg": widget.image});
+                              }) : SizedBox(width: 39,),
                         ),
                         Container(
                           width: 50,

@@ -1,7 +1,7 @@
 name: flutter_app
 description: Flutter project for mycommuniity.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 2.3.2+33
+version: 2.4.1+35
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -20,7 +20,7 @@ dependencies:
   sqflite: ^2.0.1 #本地数据库
   steel_crypt: ^3.0.0+1 #加解密
   encrypt: ^5.0.1 #加解密
-  fluwx_no_pay: ^3.8.1 #微信分享无支付版本
+  fluwx: ^3.8.1+1 #微信分享带支付
   flutter_bloc: ^7.0.1
   equatable: ^2.0.3 #对象比较
   tobias: ^2.2.0 #支付宝sdk

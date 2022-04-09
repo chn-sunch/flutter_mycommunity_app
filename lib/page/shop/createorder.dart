@@ -351,7 +351,7 @@ class _CreateOrderPageState extends State<CreateOrder> {
                       speaceName = speaceName.substring(0, speaceName.length -1);
                     }
 
-                    Navigator.pushNamed(context, '/OrderInfo',
+                    Navigator.pushNamed(context, '/OrderConfirm',
                         arguments: {"goodprice": widget.goodPiceModel, "specsid": _specsid,
                         "productNum": _productNum, "specsname": speaceName , "saleprice": _saleprice});
                   }),

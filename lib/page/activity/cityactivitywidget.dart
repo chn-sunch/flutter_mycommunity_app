@@ -128,14 +128,11 @@ class _CityActivityWidgetState extends State<CityActivityWidget> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            InkWell(
-                              child: IconText(
-                                widget.activity.likenum.toString() == "0" ? '点赞':widget.activity.likenum.toString(),
-                                padding: EdgeInsets.only(right: 2),
-                                style: TextStyle(color: Colors.black54, fontSize: 12),
-                                icon: retLike ? Icon(IconFont.icon_zan1, color: Colors.redAccent,size: 16,): Icon(IconFont.icon_aixin, color: Colors.black54,size: 16,),
-                                onTap: (){},
-                              ),
+                            IconText(
+                              widget.activity.likenum.toString() == "0" ? '点赞':widget.activity.likenum.toString(),
+                              padding: EdgeInsets.only(right: 2),
+                              style: TextStyle(color: Colors.black54, fontSize: 12),
+                              icon: retLike ? Icon(IconFont.icon_zan1, color: Colors.redAccent,size: 16,): Icon(IconFont.icon_aixin, color: Colors.black54,size: 16,),
                               onTap: () async {
                                 if(Global.profile.user == null){
                                   Navigator.pushNamed(context, '/Login');
@@ -168,19 +165,14 @@ class _CityActivityWidgetState extends State<CityActivityWidget> {
                               },
                             ),
                             SizedBox(width: 20,),
-                            InkWell(
-                              child: IconText(
-                                widget.activity.commentnum.toString() == "0" ? '评论' : widget.activity.commentnum.toString(),
-                                padding: EdgeInsets.only(right: 2),
-                                style: TextStyle(color: Colors.black54, fontSize: 12),
-                                icon: Icon(IconFont.icon_liuyan, color: Colors.black45, size: 16,),
-                                onTap: (){
-                                },
-                              ),
+                            IconText(
+                              widget.activity.commentnum.toString() == "0" ? '评论' : widget.activity.commentnum.toString(),
+                              padding: EdgeInsets.only(right: 2),
+                              style: TextStyle(color: Colors.black54, fontSize: 12),
+                              icon: Icon(IconFont.icon_liuyan, color: Colors.black45, size: 16,),
                               onTap: (){
-                                //从城市列表进入活动详情
                                 Navigator.pushNamed(context, '/ActivityInfo', arguments: {"actid": widget.activity.actid}).then((val){
-                                });;
+                                });
                               },
                             ),
                           ],

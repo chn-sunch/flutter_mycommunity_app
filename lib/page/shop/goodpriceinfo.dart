@@ -1137,16 +1137,12 @@ class GoodPriceInfoState extends State<GoodPriceInfo> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  InkWell(
-                    child: IconText(
-                      e.likenum == 0 ? '点赞':e.likenum.toString(),
-                      padding: EdgeInsets.only(right: 2),
-                      style: TextStyle(color: Colors.black54, fontSize: 13),
-                      icon: e.likeuid != 0 ? Icon(IconFont.icon_zan1, color: Colors.redAccent,size: 18,):
-                      Icon(IconFont.icon_aixin, color: Colors.black45,size: 18,),
-                      onTap: (){
-                      },
-                    ),
+                  IconText(
+                    e.likenum == 0 ? '点赞':e.likenum.toString(),
+                    padding: EdgeInsets.only(right: 2),
+                    style: TextStyle(color: Colors.black54, fontSize: 13),
+                    icon: e.likeuid != 0 ? Icon(IconFont.icon_zan1, color: Colors.redAccent,size: 18,):
+                    Icon(IconFont.icon_aixin, color: Colors.black45,size: 18,),
                     onTap: () async {
                       if(Global.profile.user == null){
                         Navigator.pushNamed(context, '/Login');
@@ -1166,15 +1162,11 @@ class GoodPriceInfoState extends State<GoodPriceInfo> {
                     },
                   ),
                   SizedBox(width: 20,),
-                  InkWell(
-                    child: IconText(
-                      e.replynum.toString() == "0" ? '回复' : e.replynum.toString(),
-                      padding: EdgeInsets.only(right: 2),
-                      style: TextStyle(color: Colors.black54, fontSize: 13),
-                      icon: Icon(IconFont.icon_navbar_xiaoxi, color: Colors.black45, size: 18,),
-                      onTap: (){
-                      },
-                    ),
+                  IconText(
+                    e.replynum.toString() == "0" ? '回复' : e.replynum.toString(),
+                    padding: EdgeInsets.only(right: 2),
+                    style: TextStyle(color: Colors.black54, fontSize: 13),
+                    icon: Icon(IconFont.icon_navbar_xiaoxi, color: Colors.black45, size: 18,),
                     onTap: (){
                       Navigator.pushNamed(context, '/EvaluateInfo', arguments: {"evaluateActivity": e}).then((val){
                         setState(() {

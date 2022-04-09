@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import '../../../model/order.dart';
@@ -12,7 +11,6 @@ import '../../../service/userservice.dart';
 import '../../../util/showmessage_util.dart';
 import '../../../util/imhelper_util.dart';
 import '../../../global.dart';
-import 'package:tobias/tobias.dart' as tobias;
 
 class MyOrderPending extends StatefulWidget {
 
@@ -200,37 +198,8 @@ class _MyOrderPendingState extends State<MyOrderPending>{
                       borderRadius: BorderRadius.all(Radius.circular(9))
                     ),
                   onPressed: () async {
-                    if(!Global.isInDebugMode) {
-                      bool isInstalled = await tobias.isAliPayInstalled();
-                      if (!isInstalled) {
-                        ShowMessage.showToast("需要有支付宝客户端才能支付");
-                        return;
-                      }
-                    }
-
-                    String orderinfo = await _activityService.getActivityOrder(Global.profile.user!.uid,
-                        Global.profile.user!.token!, e.gpactid!, e.goodpriceid, e.goodpricesku, e.productnum, e.orderid!, errorCallBack);
-                    //调用支付宝接口
-                    if(orderinfo != null && orderinfo.isNotEmpty) {
-                      Map ret;
-                      ret = await tobias.aliPay(orderinfo);
-                      if(ret != null && ret["resultStatus"] == "9000"){
-                        GoodPiceModel? goodprice = await _gpservice.getGoodPriceInfo(e.goodpriceid);
-                        if(goodprice != null) {
-                          Navigator.pushReplacementNamed(
-                              context, '/OrderFinish', result: 1,
-                              arguments: {
-                                "goodprice": goodprice,
-                                "gpprice": e.gpprice,
-                                "productnum": e.productnum,
-                                "ordertime": e.createtime
-                              });
-                        }
-                      }
-                      else{
-                        // ShowMessage.showToast("支付失败");
-                      }
-                    }
+                    await _gotoPay(e.goodpriceid, e.goodpricesku, e.productnum, e.goodpricespeacename, e.gpprice!,
+                        e.goodpricetitle, e.goodpricebrand, e.goodpricepic, e.orderid!);
                   },),
                 ],
               ),
@@ -249,7 +218,6 @@ class _MyOrderPendingState extends State<MyOrderPending>{
       lists.add(SizedBox(height: 10,));
 
       ret = ListView(
-
         children: lists,
       );
     }
@@ -272,6 +240,16 @@ class _MyOrderPendingState extends State<MyOrderPending>{
     }
   }
 
+  Future<void> _gotoPay(String goodpriceid, String specsid, int productNum,
+      String speaceName, double gpprice, String title, String brand, String pic, String orderid) async {
+
+    Navigator.pushNamed(context, '/OrderInfo',
+        arguments: {"title": title, "specsid": specsid,
+          "productNum": productNum, "specsname": speaceName ,
+          "saleprice": gpprice, "goodpriceid": goodpriceid, "brand": brand, "pic": pic, "orderid": orderid}).then((value){
+            _getMyOrder();
+          });
+  }
 
   Future<void> _asked(String gpactid, String orderid) async {
     return showDialog<Null>(

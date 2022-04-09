@@ -178,14 +178,11 @@ class _BugListState extends State<BugList> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        InkWell(
-                          child: IconText(
-                            e.likenum.toString() == "0" ? '点赞':e.likenum.toString(),
-                            padding: EdgeInsets.only(right: 2),
-                            style: TextStyle(color: Colors.black54, fontSize: 13),
-                            icon: e.islike ? Icon(IconFont.icon_zan1, color: Global.profile.backColor,size: 19,): Icon(IconFont.icon_aixin, color: Colors.black54,size: 19,),
-                            onTap: (){},
-                          ),
+                        IconText(
+                          e.likenum.toString() == "0" ? '点赞':e.likenum.toString(),
+                          padding: EdgeInsets.only(right: 2),
+                          style: TextStyle(color: Colors.black54, fontSize: 13),
+                          icon: e.islike ? Icon(IconFont.icon_zan1, color: Global.profile.backColor,size: 19,): Icon(IconFont.icon_aixin, color: Colors.black54,size: 19,),
                           onTap: () async {
                             if(isEnter) {
                               isEnter = false;
@@ -214,19 +211,14 @@ class _BugListState extends State<BugList> {
                           },
                         ),
                         SizedBox(width: 20,),
-                        InkWell(
-                          child: IconText(
-                            e.commentcount.toString() == "0" ? '评论' : e.commentcount.toString(),
-                            padding: EdgeInsets.only(right: 2),
-                            style: TextStyle(color: Colors.black54, fontSize: 13),
-                            icon: Icon(IconFont.icon_liuyan, color: Colors.black45, size: 19,),
-                            onTap: (){
-                            },
-                          ),
+                        IconText(
+                          e.commentcount.toString() == "0" ? '评论' : e.commentcount.toString(),
+                          padding: EdgeInsets.only(right: 2),
+                          style: TextStyle(color: Colors.black54, fontSize: 13),
+                          icon: Icon(IconFont.icon_liuyan, color: Colors.black45, size: 19,),
                           onTap: (){
-                            //从城市列表进入活动详情
                             Navigator.pushNamed(context, '/BugInfo', arguments: {"bugid": e.bugid}).then((val){
-                            });;
+                            });
                           },
                         ),
                       ],

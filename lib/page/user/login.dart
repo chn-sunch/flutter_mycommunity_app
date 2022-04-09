@@ -5,8 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluwx/fluwx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:fluwx_no_pay/fluwx_no_pay.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../../bloc/user/authentication_bloc.dart';
@@ -394,6 +394,7 @@ class _LoginPageState extends State<LoginPage> {
             cursorColor: Global.defredcolor,
             style: TextStyle(color: Colors.black, fontSize: 19),
             focusNode: _passwordFocus_mobile,
+
             obscureText: !_isShowPwd,
             controller: TextEditingController.fromValue(TextEditingValue(
               text: _password,
@@ -405,9 +406,11 @@ class _LoginPageState extends State<LoginPage> {
               ),
             )),
             decoration: InputDecoration(
+              contentPadding: EdgeInsets.only(top: -5,bottom: 0),
               hintStyle: TextStyle(fontSize: 19, color: Colors.black45),
               hintText: "请输入密码",
-              border: InputBorder.none,
+              alignLabelWithHint: true,
+              border: OutlineInputBorder(borderSide: BorderSide.none),
               suffixIcon: IconButton(icon: Icon((_isShowPwd) ? IconFont.icon_yanjing_zheng : IconFont.icon_yanjing, size: 19,), color: Colors.grey,
                 onPressed: (){
                   setState(() {

@@ -170,14 +170,11 @@ class _MomentWidgetState extends State<MomentWidget> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  InkWell(
-                    child: IconText(
-                      moment.likenum.toString() == "0" ? '点赞':moment.likenum.toString(),
-                      padding: EdgeInsets.only(right: 2),
-                      style: TextStyle(color: Colors.black45, fontSize: 13),
-                      icon: retLike ? Icon(IconFont.icon_zan1, color: Global.profile.backColor,size: 16,): Icon(IconFont.icon_aixin, color: Colors.black45,size: 16,),
-                      onTap: (){},
-                    ),
+                  IconText(
+                    moment.likenum.toString() == "0" ? '点赞':moment.likenum.toString(),
+                    padding: EdgeInsets.only(right: 2),
+                    style: TextStyle(color: Colors.black45, fontSize: 13),
+                    icon: retLike ? Icon(IconFont.icon_zan1, color: Global.profile.backColor,size: 16,): Icon(IconFont.icon_aixin, color: Colors.black45,size: 16,),
                     onTap: () async {
                       if(isEnter) {
                         isEnter = false;
@@ -206,17 +203,13 @@ class _MomentWidgetState extends State<MomentWidget> {
                     },
                   ),
                   SizedBox(width: 20,),
-                  InkWell(
-                    child: IconText(
-                      moment.commentcount.toString() == "0" ? '评论' : moment.commentcount.toString(),
-                      padding: EdgeInsets.only(right: 2),
-                      style: TextStyle(color: Colors.black45, fontSize: 13),
-                      icon: Icon(IconFont.icon_navbar_xiaoxi, color: Colors.black45, size: 16,),
-                      onTap: (){
-                      },
-                    ),
+                  IconText(
+                    moment.commentcount.toString() == "0" ? '评论' : moment.commentcount.toString(),
+                    padding: EdgeInsets.only(right: 2),
+                    style: TextStyle(color: Colors.black45, fontSize: 13),
+                    icon: Icon(IconFont.icon_navbar_xiaoxi, color: Colors.black45, size: 16,),
                     onTap: (){
-                      Navigator.pushNamed(context, '/MomentInfo', arguments: {"actid": moment.momentid});
+                      Navigator.pushNamed(context, '/MomentInfo', arguments: {"momentid": moment.momentid});
                     },
                   ),
                 ],

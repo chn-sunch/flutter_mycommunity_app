@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:fluwx/fluwx.dart';
 
 
 import '../../global.dart';
-import '../icontext.dart';
 import '../../common/iconfont.dart';
 import '../../util/showmessage_util.dart';
-import 'package:fluwx_no_pay/fluwx_no_pay.dart';
+import '../icontext.dart';
 
 class WXSessionShareWebPage extends StatefulWidget {
   int shareType = 0;//0会话  1朋友圈
@@ -71,13 +71,11 @@ class WXSessionShareWebPageState extends State<WXSessionShareWebPage> {
     Widget retWidget = SizedBox.shrink();
     if(widget.shareType == 0){
       retWidget = Container(
-        child: InkWell(
-          child: IconText("微信",icon: Icon(IconFont.icon_weixin4, color: Colors.green, size: 35,),
-              style: TextStyle(color: Colors.black87, fontSize: 13), direction: Axis.vertical,onTap: (){}),
-          onTap: (){
-            _share();
-          },
-        ),
+        child: IconText("微信",icon: Icon(IconFont.icon_weixin4, color: Colors.green, size: 35,),
+            style: TextStyle(color: Colors.black87, fontSize: 13), direction: Axis.vertical,onTap: (){
+              _share();
+
+            }),
       );
     }
     if(widget.shareType == 1){

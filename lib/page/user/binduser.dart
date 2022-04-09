@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fluwx_no_pay/fluwx_no_pay.dart';
+import 'package:fluwx/fluwx.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import '../../model/user.dart';
 import '../../widget/circle_headimage.dart';

@@ -162,14 +162,11 @@ class _ActivityWidgetState extends State<ActivityWidget> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  InkWell(
-                    child: IconText(
-                      _activity.likenum.toString() == "0" ? '点赞':_activity.likenum.toString(),
-                      padding: EdgeInsets.only(right: 2),
-                      style: TextStyle(color: Colors.black45, fontSize: 13),
-                      icon: retLike ? Icon(IconFont.icon_zan1, color: Global.profile.backColor,size: 16,): Icon(IconFont.icon_aixin, color: Colors.black45,size: 16,),
-                      onTap: (){},
-                    ),
+                  IconText(
+                    _activity.likenum.toString() == "0" ? '点赞':_activity.likenum.toString(),
+                    padding: EdgeInsets.only(right: 2),
+                    style: TextStyle(color: Colors.black45, fontSize: 13),
+                    icon: retLike ? Icon(IconFont.icon_zan1, color: Global.profile.backColor,size: 16,): Icon(IconFont.icon_aixin, color: Colors.black45,size: 16,),
                     onTap: () async {
                       if(isEnter) {
                         isEnter = false;
@@ -198,15 +195,11 @@ class _ActivityWidgetState extends State<ActivityWidget> {
                     },
                   ),
                   SizedBox(width: 20,),
-                  InkWell(
-                    child: IconText(
-                      _activity.commentnum.toString() == "0" ? '评论' : _activity.commentnum.toString(),
-                      padding: EdgeInsets.only(right: 2),
-                      style: TextStyle(color: Colors.black45, fontSize: 13),
-                      icon: Icon(IconFont.icon_navbar_xiaoxi, color: Colors.black45, size: 16,),
-                      onTap: (){
-                      },
-                    ),
+                  IconText(
+                    _activity.commentnum.toString() == "0" ? '评论' : _activity.commentnum.toString(),
+                    padding: EdgeInsets.only(right: 2),
+                    style: TextStyle(color: Colors.black45, fontSize: 13),
+                    icon: Icon(IconFont.icon_navbar_xiaoxi, color: Colors.black45, size: 16,),
                     onTap: (){
                       Navigator.pushNamed(context, '/ActivityInfo', arguments: {"actid": _activity.actid});
                     },

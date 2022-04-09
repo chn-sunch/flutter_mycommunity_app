@@ -23,6 +23,7 @@ import '../page/shop/collection.dart';
 import '../page/shop/goodpriceinfo.dart';
 import '../page/shop/createorder.dart';
 import '../page/shop/orderfinish.dart';
+import '../page/shop/orderconfirm.dart';
 import '../page/shop/orderinfo.dart';
 import '../page/shop/searchproduct.dart';
 import '../page/shop/searchproductresultpage.dart';
@@ -47,7 +48,6 @@ import '../page/user/order/refund.dart';
 import '../page/user/setting.dart';
 import '../page/user/followuserlist.dart';
 import '../page/user/fanslist.dart';
-import '../page/user/order/allorder.dart';
 import '../page/user/order/evaluate.dart';
 import '../page/user/syshelper.dart';
 import '../page/user/login.dart';
@@ -675,6 +675,14 @@ var onGenerateRoute = (RouteSettings settings){
         return AnimationPageRoute(builder: (_) => OrderInfo(arguments: settings.arguments,), settings: settings.copyWith());
       } else if (Platform.isIOS) {
         return CupertinoPageRoute(builder: (_) => OrderInfo(arguments: settings.arguments,), settings: settings.copyWith());
+      }
+      break;
+
+    case '/OrderConfirm':
+      if (Platform.isAndroid) {
+        return AnimationPageRoute(builder: (_) => OrderConfirm(arguments: settings.arguments,), settings: settings.copyWith());
+      } else if (Platform.isIOS) {
+        return CupertinoPageRoute(builder: (_) => OrderConfirm(arguments: settings.arguments,), settings: settings.copyWith());
       }
       break;
 

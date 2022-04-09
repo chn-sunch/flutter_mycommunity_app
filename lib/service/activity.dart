@@ -1,7 +1,6 @@
 import 'dart:collection';
 
 import 'package:dio/dio.dart';
-import 'package:tobias/tobias.dart' as tobias;
 
 import '../util/net_util.dart';
 import '../util/imhelper_util.dart';
@@ -2549,8 +2548,9 @@ class ActivityService{
 
 
   //获取order信息
-  Future<String> getActivityOrder(int uid,  String token,  String actid, String goodpriceid, String specsid, int productnum, String orderid, Function errorCallBack) async {
-    String orderinfo = "";
+  Future<Map<dynamic, dynamic>?> getActivityOrder(int uid,  String token,  String actid, String goodpriceid, String specsid,
+      int productnum, String orderid, int paymenttype, String speacename, Function errorCallBack) async {
+    Map<dynamic, dynamic>? orderinfo = null;
     FormData formData = FormData.fromMap({
       "uid": uid,
       "token": token,
@@ -2558,12 +2558,24 @@ class ActivityService{
       "goodpriceid": goodpriceid,
       "specsid": specsid,
       "productnum": productnum,
-      "orderid": orderid
+      "orderid": orderid,
+      "paymenttype": paymenttype,
+      "speacename": speacename
     });
 
     await NetUtil.getInstance().post(formData, "/Activity/getActivityOrder", (Map<String, dynamic> data) {
-      orderinfo = data["data"];
+      if(paymenttype == 0) {
+        //支付宝
+        orderinfo = Map();
+        orderinfo!.addAll({'data':data['data']});
+      }
+
+      if(paymenttype == 1){
+        //微信
+        orderinfo  = data['data'] as Map;
+      }
     }, errorCallBack);
+
     return orderinfo;
   }
 

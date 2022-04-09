@@ -164,8 +164,8 @@ class _MyHomeState extends State<MyHome> {
                                     toAnimate: false,
                                     badgeContent: Text(_finishOrderCount > 99 ? '...' : _finishOrderCount.toString(),
                                         style: TextStyle(fontSize: 10, color: Colors.white)),
-                                    child: Icon(IconFont.icon_daifukuan2, size: 29, color: Colors.cyan,)):
-                                Icon(IconFont.icon_daifukuan2, size: 29, color: Colors.cyan,),
+                                    child: Icon(IconFont.icon_daifukuan2, size: 29, color: Colors.deepOrange,)):
+                                Icon(IconFont.icon_daifukuan2, size: 29, color: Colors.deepOrange,),
                                     style: TextStyle(fontSize: 12, color: Colors.black), direction: Axis.vertical, padding: EdgeInsets.only(bottom: 5), onTap: (){
                                     Navigator.pushNamed(context, '/MyOrderFinish').then((value){
                                       setState(() {
@@ -179,8 +179,8 @@ class _MyHomeState extends State<MyHome> {
                                     toAnimate: false,
                                     badgeContent: Text(_countActivityEvaluate > 99 ? '...' : _countActivityEvaluate.toString(),
                                         style: TextStyle(fontSize: 10, color: Colors.white)),
-                                    child: Icon(IconFont.icon_dingdan, size: 29, color: Colors.cyan,)):
-                                Icon(IconFont.icon_dingdan, size: 29, color: Colors.cyan,),
+                                    child: Icon(IconFont.icon_dingdan, size: 29, color: Colors.teal,)):
+                                Icon(IconFont.icon_dingdan, size: 29, color: Colors.teal,),
                                     style: TextStyle(fontSize: 12, color: Colors.black), direction: Axis.vertical, padding: EdgeInsets.only(bottom: 5),
                                   onTap: (){
                                     Navigator.pushNamed(context, '/ActivityEvaluate').then((value){

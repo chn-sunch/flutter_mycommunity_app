@@ -33,6 +33,8 @@ Order _$OrderFromJson(Map<String, dynamic> json) => Order(
       json['goodpricetitle'] != null ? json['goodpricetitle'] as String : "",
       json['goodpricepic'] != null ? json['goodpricepic'] as String : "",
       json['touid'] != null ? json['touid'] as int : 0,
+      json['goodpricebrand'] != null ? json['goodpricebrand'] as String : "",
+      json['goodpricespeacename'] != null ? json['goodpricespeacename'] as String : ""
     );
 
 Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
@@ -55,4 +57,6 @@ Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
       'orderstatus': instance.orderstatus,
       'productnum': instance.productnum,
       'expirestime': instance.expirestime,
+      'goodpricebrand': instance.goodpricebrand,
+      'goodpricespeacename': instance.goodpricespeacename
     };

@@ -1743,7 +1743,7 @@ class ImHelper{
         "SELECT orderunevaluatecount FROM ${TableHelper.user_orderunevaluate_state_table} "
             " WHERE uid=${Global.profile.user!.uid} "));
 
-    if(result != null)
+    if(result != null && result != -1)
       return result;
     else
       return 0;

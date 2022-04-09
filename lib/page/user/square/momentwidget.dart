@@ -102,15 +102,12 @@ class _MomentWidgetState extends State<MomentWidget> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            InkWell(
-                              child: IconText(
-                                widget.moment.likenum.toString() == "0" ? '点赞':widget.moment.likenum.toString(),
-                                padding: EdgeInsets.only(right: 2),
-                                style: TextStyle(color: Colors.black54, fontSize: 12),
-                                icon: widget.moment.islike ? Icon(IconFont.icon_zan1, color: Colors.redAccent,size: 16,):
-                                Icon(IconFont.icon_aixin, color: Colors.black54,size: 16,),
-                                onTap: (){},
-                              ),
+                            IconText(
+                              widget.moment.likenum.toString() == "0" ? '点赞':widget.moment.likenum.toString(),
+                              padding: EdgeInsets.only(right: 2),
+                              style: TextStyle(color: Colors.black54, fontSize: 12),
+                              icon: widget.moment.islike ? Icon(IconFont.icon_zan1, color: Colors.redAccent,size: 16,):
+                              Icon(IconFont.icon_aixin, color: Colors.black54,size: 16,),
                               onTap: () async {
                                 if(Global.profile.user == null){
                                   Navigator.pushNamed(context, '/Login');
@@ -144,22 +141,17 @@ class _MomentWidgetState extends State<MomentWidget> {
                               },
                             ),
                             SizedBox(width: 20,),
-                            InkWell(
-                              child: IconText(
-                                widget.moment.commentcount.toString() == "0" ? '评论' : widget.moment.commentcount.toString(),
-                                padding: EdgeInsets.only(right: 2),
-                                style: TextStyle(color: Colors.black54, fontSize: 12),
-                                icon: Icon(IconFont.icon_liuyan, color: Colors.black45, size: 16,),
-                                onTap: (){
-                                },
-                              ),
+                            IconText(
+                              widget.moment.commentcount.toString() == "0" ? '评论' : widget.moment.commentcount.toString(),
+                              padding: EdgeInsets.only(right: 2),
+                              style: TextStyle(color: Colors.black54, fontSize: 12),
+                              icon: Icon(IconFont.icon_liuyan, color: Colors.black45, size: 16,),
                               onTap: (){
-                                //从城市列表进入活动详情
                                 Navigator.pushNamed(context, '/MomentInfo', arguments: {"momentid": widget.moment.momentid}).then((val){
                                   setState(() {
 
                                   });
-                                });;
+                                });
                               },
                             ),
                           ],
