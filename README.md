@@ -37,8 +37,8 @@ Tools • Dart 2.16.1
 由于使用的部分组件可能还不支持高版本Flutter SDK,如果超过这个版本有可能无法编译。
 
 ## 待开发的功能
-1. 微信支付（开发中）
-2. 商户入驻
+1. 微信支付（已完成2022-4-9 对应版本 2.4.1）
+2. 商户入驻（后端代码开发中，分别用微信的收付通和支付宝的直付通，前端欢迎pull request）
 3. 消息免打扰，修改群名称等
 4. 代码优化重构
 
@@ -47,6 +47,6 @@ Tools • Dart 2.16.1
 ![1](https://mycommunity-prod.oss-cn-hangzhou.aliyuncs.com/githubimg/index.jpg)  | ![2](https://mycommunity-prod.oss-cn-hangzhou.aliyuncs.com/githubimg/activity.jpg)  | ![3](https://mycommunity-prod.oss-cn-hangzhou.aliyuncs.com/githubimg/moment.jpg)
  ---- | ----- | ------  
 ![4](https://mycommunity-prod.oss-cn-hangzhou.aliyuncs.com/githubimg/message.jpg)  | ![5](https://mycommunity-prod.oss-cn-hangzhou.aliyuncs.com/githubimg/myhome1.jpg) | ![6](https://mycommunity-prod.oss-cn-hangzhou.aliyuncs.com/githubimg/map.jpg)
-![4](https://mycommunity-prod.oss-cn-hangzhou.aliyuncs.com/githubimg/account1.jpg)  | ![5](https://mycommunity-prod.oss-cn-hangzhou.aliyuncs.com/githubimg/pay.jpg) | ![6](https://mycommunity-prod.oss-cn-hangzhou.aliyuncs.com/githubimg/redpacket.jpg)
+![7](https://mycommunity-prod.oss-cn-hangzhou.aliyuncs.com/githubimg/account1.jpg)  | ![8](https://mycommunity-prod.oss-cn-hangzhou.aliyuncs.com/githubimg/pay.jpg) | ![9](https://mycommunity-prod.oss-cn-hangzhou.aliyuncs.com/githubimg/redpacket.jpg)
 ## App演示
 应用商店搜索出来玩吧
