@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:isolate';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 
