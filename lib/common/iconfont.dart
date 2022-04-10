@@ -2,6 +2,9 @@ import 'package:flutter/widgets.dart';
 class IconFont{
   static const String _family = 'iconfont';
   IconFont._();
+  static const IconData icon_PC_jiaruwomen = IconData(0xe719, fontFamily: _family);
+  static const IconData icon_jiaruwomen = IconData(0xe71a, fontFamily: _family);
+  static const IconData icon_jiaruwomen1 = IconData(0xe839, fontFamily: _family);
   static const IconData icon_guanyuwomen = IconData(0xe715, fontFamily: _family);
   static const IconData icon_guanyuwomen1 = IconData(0xe716, fontFamily: _family);
   static const IconData icon_guanyuwomen2 = IconData(0xe717, fontFamily: _family);

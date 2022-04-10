@@ -27,6 +27,8 @@ class Global {
 
   static String headimg = "images/icon_head_default.png";
   static String nullimg = "images/icon_nullimg.png";
+
+  static String osshost = "https://oss.chulaiwanba.com/";
   static String apphost = "https://www.chulaiwanba.com/";
   static String applogourl = "https://mycommunity-prod.oss-cn-hangzhou.aliyuncs.com/appImage/logo.png";
   static bool isWeChatInstalled = false;

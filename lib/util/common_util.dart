@@ -96,13 +96,18 @@ class  CommonUtil{
   }
   //获取城市名称
   static String getCityName(province, city){
-    Map<String, dynamic> mycity = citiesData[province];
-    return  mycity[city]["name"];
+    if(citiesData[province] != null) {
+      Map<String, dynamic> mycity = citiesData[province];
+      return mycity[city]["name"];
+    }
+
+    return province == "allCode" ? "全国" : province;
   }
 
   //获取省份和城市
   static String getProvinceCityName(province, city){
     Map<String, dynamic> mycity = citiesData[province];
+
     return  provincesData[province]! + mycity[city]["name"];
   }
   //获取城市名称，高德地图的adCode

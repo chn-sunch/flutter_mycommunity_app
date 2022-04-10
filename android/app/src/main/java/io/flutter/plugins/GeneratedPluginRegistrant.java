@@ -78,7 +78,7 @@ public final class GeneratedPluginRegistrant {
     try {
       flutterEngine.getPlugins().add(new com.jarvan.fluwx.FluwxPlugin());
     } catch(Exception e) {
-      Log.e(TAG, "Error registering plugin fluwx_no_pay, com.jarvan.fluwx.FluwxPlugin", e);
+      Log.e(TAG, "Error registering plugin fluwx, com.jarvan.fluwx.FluwxPlugin", e);
     }
     try {
       flutterEngine.getPlugins().add(new vn.hunghd.flutter.plugins.imagecropper.ImageCropperPlugin());

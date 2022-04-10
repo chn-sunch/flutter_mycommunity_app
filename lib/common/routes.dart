@@ -22,6 +22,7 @@ import '../page/activity/widget/fraudactivity.dart';
 import '../page/shop/collection.dart';
 import '../page/shop/goodpriceinfo.dart';
 import '../page/shop/createorder.dart';
+import '../page/shop/joinus.dart';
 import '../page/shop/orderfinish.dart';
 import '../page/shop/orderconfirm.dart';
 import '../page/shop/orderinfo.dart';
@@ -686,5 +687,12 @@ var onGenerateRoute = (RouteSettings settings){
       }
       break;
 
+    case '/JoinUs':
+      if (Platform.isAndroid) {
+        return AnimationPageRoute(builder: (_) => JoinUs(), settings: settings.copyWith());
+      } else if (Platform.isIOS) {
+        return CupertinoPageRoute(builder: (_) => JoinUs(), settings: settings.copyWith());
+      }
+      break;
   }
 };

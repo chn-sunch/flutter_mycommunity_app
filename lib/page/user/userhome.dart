@@ -234,6 +234,31 @@ class _MyHomeState extends State<MyHome> {
                         color: Colors.white
                       ),
                     ),
+                    Container(padding: EdgeInsets.only(left: 20, right: 20, top: 20,bottom: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconText('加入我们', icon: Icon(IconFont.icon_jiaruwomen1, size: 29,),
+                            style: TextStyle(fontSize: 12, color: Colors.black), direction: Axis.vertical, padding: EdgeInsets.only(bottom: 5), onTap: (){
+                              Navigator.pushNamed(context, '/JoinUs');
+                            },),
+                          IconText('', icon: SizedBox.shrink(),
+                            style: TextStyle(fontSize: 12, color: Colors.black), direction: Axis.vertical, padding: EdgeInsets.only(bottom: 5), onTap: (){
+                            },),
+
+                          IconText('', icon: SizedBox.shrink(),
+                            style: TextStyle(fontSize: 12, color: Colors.black), direction: Axis.vertical, padding: EdgeInsets.only(bottom: 5), onTap: (){
+                            },),
+                          IconText('', icon: SizedBox.shrink(),
+                            style: TextStyle(fontSize: 12, color: Colors.black), direction: Axis.vertical, padding: EdgeInsets.only(bottom: 5), onTap: (){
+                            },),
+                        ],
+                      ),
+                      decoration: BoxDecoration(
+                          color: Colors.white
+                      ),
+                    ),
+
                   ],
                 ),
               )
