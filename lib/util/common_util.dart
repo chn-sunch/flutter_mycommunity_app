@@ -106,9 +106,12 @@ class  CommonUtil{
 
   //获取省份和城市
   static String getProvinceCityName(province, city){
-    Map<String, dynamic> mycity = citiesData[province];
+    if(citiesData[province] != null) {
+      Map<String, dynamic> mycity = citiesData[province];
+      return provincesData[province]! + mycity[city]["name"];
+    }
 
-    return  provincesData[province]! + mycity[city]["name"];
+    return "太阳系";
   }
   //获取城市名称，高德地图的adCode
   static String getCityNameByGaoDe(String adcode){

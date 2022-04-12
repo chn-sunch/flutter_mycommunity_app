@@ -96,9 +96,9 @@ class _SharedRelationListState extends State<SharedRelationList> {
   Widget UserRelationList(state){
     if(state is NewMessageState){
       List<GroupRelation> groupRelations = state.groupRelations;
-      if(groupRelations == null){
+      if(groupRelations == null || groupRelations.length == 0){
         return Center(
-          child: Text('还没有收到消息，快去参加活动吧！', style: TextStyle(color: Colors.black54, fontSize: 14, ),),
+          child: Text('聊天列表里一个人也么有..！', style: TextStyle(color: Colors.black54, fontSize: 14, ),),
         );
       }
 
